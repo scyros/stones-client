@@ -1,0 +1,42 @@
+{
+  "name": "stones",
+  "version": "0.1.0",
+  "authors": [
+    "Carlos León <carlos.eduardo.leon.franco@gmail.com>"
+  ],
+  "description": "Stones is a library built on top of AngularJS to work in conjunction with Stones Server to synchonize communications between Client and Server",
+  "main": "dist/scripts/stones.js",
+  "keywords": [
+    "stones",
+    "angular"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "1.2.13",
+    "json3": "~3.2.6",
+    "es5-shim": "~2.1.0",
+    "jquery": "~2.0.3",
+    "sass-bootstrap": "~3.0.2",
+    "angular-resource": "1.2.13",
+    "angular-cookies": "1.2.13",
+    "angular-sanitize": "1.2.13",
+    "angular-route": "1.2.13",
+    "angular-animate": "1.2.13",
+    "angular-growl": "~0.4.0"
+  },
+  "devDependencies": {
+    "angular-mocks": "1.2.13",
+    "angular-scenario": "1.2.13"
+  },
+  "resolutions": {
+    "angular": "1.2.13"
+  }
+}

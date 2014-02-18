@@ -1,0 +1,1286 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"h",
+				"http"
+			],
+			[
+				"defe",
+				"deferred"
+			],
+			[
+				"htt",
+				"http_opts"
+			],
+			[
+				"cach",
+				"cache"
+			],
+			[
+				"co",
+				"coffeedoc"
+			],
+			[
+				"lo",
+				"locationProvider"
+			],
+			[
+				"cache",
+				"cacheFactory"
+			],
+			[
+				"t",
+				"toBe"
+			],
+			[
+				"kar",
+				"karmalive"
+			],
+			[
+				"text",
+				"text-align"
+			],
+			[
+				"col",
+				"col-md-12"
+			],
+			[
+				"mar",
+				"margin-bottom"
+			],
+			[
+				"border",
+				"border-radius"
+			],
+			[
+				"logg",
+				"logger"
+			],
+			[
+				"act",
+				"actions"
+			],
+			[
+				"mu",
+				"music"
+			],
+			[
+				"STr",
+				"StringProperty"
+			],
+			[
+				"re",
+				"repeated"
+			],
+			[
+				"Permiss",
+				"permissions"
+			],
+			[
+				"url",
+				"urlsafe"
+			],
+			[
+				"ur",
+				"urlsafe_key"
+			],
+			[
+				"ret",
+				"return"
+			],
+			[
+				"Stru",
+				"StructuredProperty"
+			],
+			[
+				"allo",
+				"allow_new"
+			],
+			[
+				"refer",
+				"ReferenceProperty"
+			],
+			[
+				"Me",
+				"Member"
+			],
+			[
+				"Ac",
+				"ActionAllowedMixin"
+			],
+			[
+				"Met",
+				"MetaData"
+			],
+			[
+				"font-s",
+				"font-size"
+			],
+			[
+				"BaseP",
+				"BasePasswordReset2Handler"
+			],
+			[
+				"pass",
+				"password"
+			],
+			[
+				"passw",
+				"password_reset"
+			],
+			[
+				"user",
+				"user_id"
+			],
+			[
+				"sto",
+				"stones"
+			],
+			[
+				"user_",
+				"user_id"
+			],
+			[
+				"crea",
+				"create_signup_token"
+			],
+			[
+				"error",
+				"errors"
+			],
+			[
+				"password",
+				"password_reset_text"
+			],
+			[
+				"CONF",
+				"VISIT_CONFIRMED_STATE"
+			],
+			[
+				"est",
+				"estimated_duration"
+			],
+			[
+				"postal",
+				"postal_code"
+			],
+			[
+				"pos",
+				"postal_code"
+			],
+			[
+				"add",
+				"address_type"
+			],
+			[
+				"send",
+				"send_partners_notifications"
+			],
+			[
+				"conf",
+				"confirmed"
+			],
+			[
+				"En",
+				"Engine"
+			],
+			[
+				"par",
+				"partner"
+			],
+			[
+				"class",
+				"classmethod"
+			],
+			[
+				"tai",
+				"tailored"
+			],
+			[
+				"part",
+				"partner"
+			],
+			[
+				"admin",
+				"admin_user"
+			],
+			[
+				"task",
+				"taskqueue"
+			],
+			[
+				"parte",
+				"partner_tailored"
+			],
+			[
+				"partner",
+				"partner_tailored"
+			],
+			[
+				"model",
+				"model_instance"
+			],
+			[
+				"type",
+				"types"
+			],
+			[
+				"get_tai",
+				"get_tailoreds"
+			],
+			[
+				"zoho_",
+				"zoho_customer_name"
+			],
+			[
+				"para",
+				"param"
+			],
+			[
+				"zoho",
+				"zoho_customer_name"
+			],
+			[
+				"fix",
+				"fix_tailored"
+			],
+			[
+				"tailo",
+				"tailoreds"
+			],
+			[
+				"rela",
+				"related"
+			],
+			[
+				"relate",
+				"related"
+			],
+			[
+				"au",
+				"auth"
+			],
+			[
+				"Part",
+				"Partner"
+			],
+			[
+				"Parte",
+				"PartnerPro"
+			],
+			[
+				"ex",
+				"except"
+			],
+			[
+				"bas",
+				"BaseHandler"
+			],
+			[
+				"goo",
+				"googleapis_config"
+			],
+			[
+				"techs",
+				"techs_groups"
+			],
+			[
+				"grou",
+				"groups"
+			],
+			[
+				"techs_",
+				"techs_groups"
+			],
+			[
+				"i",
+				"i	Tag"
+			],
+			[
+				"pag",
+				"PAGE_SIZE"
+			],
+			[
+				"tota",
+				"total_techs"
+			],
+			[
+				"cons",
+				"console"
+			],
+			[
+				"cur",
+				"cursor"
+			],
+			[
+				"te",
+				"techs_groups"
+			],
+			[
+				"gr",
+				"group"
+			],
+			[
+				"de",
+				"default"
+			],
+			[
+				"gro",
+				"group_info"
+			],
+			[
+				"Tec",
+				"TechsGroup"
+			],
+			[
+				"Te",
+				"TechsGroup"
+			],
+			[
+				"Inte",
+				"IntegerProperty"
+			],
+			[
+				"json",
+				"render_json"
+			],
+			[
+				"rea",
+				"ready"
+			],
+			[
+				"tech",
+				"techs_groups"
+			],
+			[
+				"tec",
+				"techs_groups"
+			],
+			[
+				"fi",
+				"fix_big"
+			],
+			[
+				"count",
+				"countdown"
+			],
+			[
+				"ty",
+				"type"
+			],
+			[
+				"bui",
+				"building_priorities"
+			],
+			[
+				"build",
+				"building_priorities"
+			],
+			[
+				"buil",
+				"building_priority"
+			],
+			[
+				"pro",
+				"priorities"
+			],
+			[
+				"sou",
+				"source"
+			],
+			[
+				"source",
+				"source_key"
+			],
+			[
+				"so",
+				"source"
+			],
+			[
+				"fu",
+				"function"
+			],
+			[
+				"save",
+				"save_config"
+			],
+			[
+				"stat",
+				"status_code"
+			],
+			[
+				"decode",
+				"decode_json"
+			],
+			[
+				"rende",
+				"render_json"
+			],
+			[
+				"tr",
+				"True"
+			],
+			[
+				"mem",
+				"memcache"
+			],
+			[
+				"post",
+				"postal_codes"
+			],
+			[
+				"st",
+				"status_code"
+			],
+			[
+				"res",
+				"response"
+			],
+			[
+				"web",
+				"webapp2_extras"
+			],
+			[
+				"memca",
+				"memcache"
+			],
+			[
+				"set",
+				"set_type"
+			],
+			[
+				"p",
+				"pros"
+			],
+			[
+				"pri",
+				"priority"
+			],
+			[
+				"pr",
+				"priority"
+			],
+			[
+				"app",
+				"approve"
+			],
+			[
+				"pa",
+				"path"
+			],
+			[
+				"blo",
+				"blob_key"
+			],
+			[
+				"conte",
+				"content"
+			],
+			[
+				"blob",
+				"blob_reader"
+			],
+			[
+				"Pro",
+				"TechsProfessions"
+			],
+			[
+				"$routeP",
+				"$routeParams"
+			],
+			[
+				"Tech",
+				"TechsProfessions"
+			],
+			[
+				"T",
+				"TechsStates"
+			],
+			[
+				"get",
+				"get_techs"
+			],
+			[
+				"u",
+				"util"
+			],
+			[
+				"Us",
+				"UserTypes"
+			],
+			[
+				"use",
+				"users"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "Gruntfile.js",
+			"settings":
+			{
+				"buffer_size": 10273,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "app/scripts/stones.coffee",
+			"settings":
+			{
+				"buffer_size": 4136,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "karma.conf.js",
+			"settings":
+			{
+				"buffer_size": 1645,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "bower.json",
+			"settings":
+			{
+				"buffer_size": 991,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "test/spec/stones/stones.coffee",
+			"settings":
+			{
+				"buffer_size": 337,
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "Packages/Python/Python.sublime-build",
+	"command_palette":
+	{
+		"height": 392.0,
+		"selected_items":
+		[
+			[
+				"pa",
+				"Package Control: Install Package"
+			],
+			[
+				"less",
+				"Package Control: List Packages"
+			],
+			[
+				"Snippet: ",
+				"Snippet: if __name__ == '__main__'"
+			],
+			[
+				"pac",
+				"Package Control: Remove Package"
+			],
+			[
+				"pack",
+				"Package Control: Install Package"
+			],
+			[
+				"packa",
+				"Package Control: Install Package"
+			],
+			[
+				"Snippet:",
+				"Snippet: #!/usr/bin/env"
+			]
+		],
+		"width": 575.0
+	},
+	"console":
+	{
+		"height": 244.0,
+		"history":
+		[
+			"import urllib.request,os; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); open(os.path.join(ipp, pf), 'wb').write(urllib.request.urlopen( 'http://sublime.wbond.net/' + pf.replace(' ','%20')).read())"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/Users/carlos/Dropbox/casacertificada.com/casacaertificadApp/Plugin CEX/casacertificada.v17.py",
+		"/Users/carlos/Dropbox/casacertificada.com/casacaertificadApp/Plugin CEX/casacertificada.v16.py",
+		"/Users/carlos/Dropbox/casacertificada.com/casacaertificadApp/Plugin CEX/casacertificada.v15.py",
+		"/Users/carlos/sources/stones-client/.tmp/scripts/stones.js",
+		"/Users/carlos/sources/stones-client/app/scripts/app.coffee",
+		"/Users/carlos/sources/stones-client/node_modules/grunt-coffeedoc/tasks/coffeedoc.js",
+		"/Users/carlos/sources/stones-client/karma.conf.js",
+		"/Users/carlos/sources/grunt-coffeedoc/test/docs/test/src/example.coffee.html",
+		"/Users/carlos/sources/grunt-coffeedoc/test/coffeedoc_test.js",
+		"/Users/carlos/sources/grunt-coffeedoc/Gruntfile.js",
+		"/Users/carlos/sources/stones-client/package.json",
+		"/Users/carlos/sources/grunt-coffeedoc/README.md",
+		"/Users/carlos/sources/grunt-coffeedoc/tasks/coffeedoc.js",
+		"/Users/carlos/sources/stones-client/bower.json",
+		"/Users/carlos/sources/grunt-coffeedoc/test/expected/example.coffee.html",
+		"/Users/carlos/.grunt-init/gruntplugin/root/tasks/name.js",
+		"/Users/carlos/sources/grunt-coffeedoc/docs/index.html",
+		"/Users/carlos/sources/grunt-coffeedoc/test/src/example.coffee",
+		"/Users/carlos/sources/stones-client/stones-client.sublime-project",
+		"/Users/carlos/sources/grunt-coffeedoc/test/fixtures/testing",
+		"/Users/carlos/sources/stones-client/test/spec/app.coffee",
+		"/Users/carlos/sources/stones-client/app/scripts/controllers/main.coffee",
+		"/Users/carlos/sources/stones-client/test/spec/controllers/main.coffee",
+		"/Users/carlos/sources/stones-client/src/stones.coffee",
+		"/Users/carlos/sources/stones-client/test/test.coffee",
+		"/Users/carlos/.grunt-init/stones-coffee/root/gruntfile.coffee",
+		"/Users/carlos/sources/stones-client/.bowerrc",
+		"/Users/carlos/sources/stones-client/gruntfile.coffee",
+		"/Users/carlos/sources/stones-client/.editorconfig",
+		"/Users/carlos/sources/stones-client/index.coffee",
+		"/Users/carlos/.grunt-init/stones-coffee/template.js",
+		"/Users/carlos/sources/stones-client/src/SimpleClass.coffee",
+		"/Users/carlos/.grunt-init/stones-coffee/rename.json",
+		"/Users/carlos/sources/stones-client/test/SimpleClass.test.coffee",
+		"/Users/carlos/.grunt-init/node-coffee/package.json",
+		"/Users/carlos/.grunt-init/node-coffee/template.js",
+		"/Users/carlos/sources/stones-client/README.md",
+		"/Users/carlos/sources/stones-client/node_modules/grunt-template-coffee/template.js",
+		"/Users/carlos/sources/radiolem/radiolem-js-cli/npm-debug.log",
+		"/Users/carlos/sources/radiolem/radiolem-server/admin/handlers.py",
+		"/Users/carlos/sources/radiolem/radiolem-server/lib/stones/oauth2.py",
+		"/Users/carlos/sources/radiolem/radiolem-server/static/c/admin.less",
+		"/Users/carlos/sources/radiolem/radiolem-server/music/models.py",
+		"/Users/carlos/sources/radiolem/radiolem-server/utils.py",
+		"/Users/carlos/sources/radiolem/radiolem-server/templates/base.html",
+		"/Users/carlos/sources/radiolem/radiolem-server/lib/stones/handlers.py",
+		"/Users/carlos/sources/radiolem/radiolem-server/templates/admin/ui.html",
+		"/Users/carlos/sources/radiolem/radiolem-server/lib/stones/auth/models.py",
+		"/Users/carlos/sources/radiolem/radiolem-server/web/urls.py",
+		"/Users/carlos/sources/radiolem/radiolem-server/web/handlers.py",
+		"/Users/carlos/sources/radiolem/radiolem-server/admin/__init__.py",
+		"/Users/carlos/sources/radiolem/radiolem-server/static/c/auth.less",
+		"/Users/carlos/sources/radiolem/radiolem-server/lib/hsaudiotag/id3v1.py",
+		"/Users/carlos/sources/radiolem/radiolem-server/settings.py",
+		"/Users/carlos/sources/radiolem/radiolem-server/test.py",
+		"/Users/carlos/sources/radiolem/radiolem-server/music/__init__.py",
+		"/Users/carlos/sources/inntdb/server/templates/auth/verify_account.html",
+		"/Users/carlos/Library/Application Support/Sublime Text 3/Packages/LESS/LESS.sublime-settings",
+		"/Users/carlos/sources/radiolem/radiolem-server/static/c/landing.less",
+		"/Users/carlos/sources/radiolem/radiolem-server/auth/handlers.py",
+		"/Users/carlos/sources/radiolem/radiolem-server/web/__init__.py",
+		"/Users/carlos/sources/radiolem/radiolem-server/templates/auth/verify_account.html",
+		"/Users/carlos/sources/radiolem/radiolem-server/templates/auth/welcome_email.html",
+		"/Users/carlos/sources/radiolem/radiolem-server/templates/auth/welcome_email.txt",
+		"/Users/carlos/sources/radiolem/radiolem-server/lib/stones/auth/handlers.py",
+		"/Users/carlos/sources/radiolem/radiolem-server/templates/auth/welcome.html",
+		"/Users/carlos/Library/Application Support/Sublime Text 3/Packages/User/Pylinter.sublime-settings",
+		"/Users/carlos/Library/Application Support/Sublime Text 3/Packages/User/Preferences.sublime-settings",
+		"/Users/carlos/Library/Application Support/Sublime Text 3/Backup/20140127074445/Pylinter/Pylinter.sublime-settings",
+		"/Users/carlos/sources/radiolem/radiolem-server/templates/auth/signup.html",
+		"/Users/carlos/sources/radiolem/radiolem-server/templates/auth/login.html",
+		"/Users/carlos/sources/inntdb/server/static/c/auth.less",
+		"/Users/carlos/sources/radiolem/radiolem-server/static/c/normalize.less",
+		"/Users/carlos/sources/inntdb/server/settings.py",
+		"/Users/carlos/sources/radiolem/radiolem-server/auth/__init__.py",
+		"/Users/carlos/sources/radiolem/radiolem-server/urls.py",
+		"/Users/carlos/sources/radiolem/radiolem-server/main.py",
+		"/Users/carlos/sources/radiolem/.gitignore",
+		"/Users/carlos/sources/radiolem/radiolem-server/lib/.gitignore",
+		"/Users/carlos/sources/radiolem/radiolem-server/app.yaml",
+		"/Users/carlos/sources/radiolem/radiolem-js-cli/app/scripts/app.coffee",
+		"/Users/carlos/sources/radiolem/npm-debug.log",
+		"/Users/carlos/sources/radiolem/webclient/npm-debug.log",
+		"/Users/carlos/Dropbox/casacertificada.com/casacaertificadApp/Plugin CEX/casacertificada.v13.py",
+		"/Users/carlos/sources/casacertificada/src/casacertificada/tailored/handlers.py",
+		"/Users/carlos/sources/casacertificada/src/casacertificada/certifications/models.py",
+		"/Users/carlos/sources/casacertificada/src/casacertificada/certifications/engine.py",
+		"/Users/carlos/sources/casacertificada/src/casacertificada/cron.yaml",
+		"/Users/carlos/sources/casacertificada/src/casacertificada/certifications/urls.py",
+		"/Users/carlos/sources/casacertificada/src/casacertificada/certifications/handlers.py",
+		"/Users/carlos/sources/casacertificada/src/casacertificada/technicians/handlers.py",
+		"/Users/carlos/sources/casacertificada/src/casacertificada/templates/certificarse.html",
+		"/Users/carlos/sources/casacertificada/src/casacertificada/static/js/certify.js",
+		"/Users/carlos/sources/casacertificada/src/casacertificada/static/js/admin.js",
+		"/Users/carlos/sources/casacertificada/src/casacertificada/static/tpl/admin/techs_groups.html",
+		"/Users/carlos/sources/casacertificada/src/casacertificada/templates/certs/certify.html",
+		"/Users/carlos/sources/casacertificada/src/casacertificada/notifications/models.py",
+		"/Users/carlos/sources/google_appengine/google/appengine/ext/ndb/query.py",
+		"/Users/carlos/sources/casacertificada/src/casacertificada/big/handlers.py",
+		"/Users/carlos/sources/casacertificada/src/casacertificada/utils.py",
+		"/Users/carlos/sources/casacertificada/src/casacertificada/technicians/urls.py",
+		"/Users/carlos/sources/casacertificada/src/casacertificada/customers/models.py",
+		"/Users/carlos/sources/casacertificada/src/casacertificada/static/tpl/admin/user.html",
+		"/Users/carlos/sources/casacertificada/src/casacertificada/static/tpl/admin/tailored.html",
+		"/Users/carlos/sources/casacertificada/src/casacertificada/static/tpl/admin/big.html",
+		"/Users/carlos/sources/casacertificada/src/casacertificada/pro/handlers.py",
+		"/Users/carlos/sources/casacertificada/src/casacertificada/static/tpl/admin/pro.html",
+		"/Users/carlos/sources/casacertificada/src/casacertificada/app.yaml",
+		"/Users/carlos/sources/casacertificada/src/casacertificada/auth/handlers.py",
+		"/Users/carlos/sources/casacertificada/src/casacertificada/auth/models.py",
+		"/Users/carlos/sources/casacertificada/src/casacertificada/static/tpl/tailored/settings.html",
+		"/Users/carlos/sources/casacertificada/src/casacertificada/static/tpl/tailored/estimates_list.html",
+		"/Users/carlos/sources/casacertificada/src/casacertificada/tailored/models.py",
+		"/Users/carlos/sources/casacertificada/src/casacertificada/certifications/ZohoInvoice.py",
+		"/Users/carlos/sources/casacertificada/src/casacertificada/static/js/tailored.js",
+		"/Users/carlos/sources/casacertificada/src/casacertificada/tailored/urls.py",
+		"/Users/carlos/sources/casacertificada/src/casacertificada/static/tpl/admin/tailoreds.html",
+		"/Users/carlos/Documents/MPML",
+		"/Users/carlos/Dropbox/casacertificada.com/casacaertificadApp/init_cex.py",
+		"/Users/carlos/Dropbox/casacertificada.com/casacaertificadApp/Plugin CEX/casacertificada.v9.py",
+		"/Users/carlos/sources/casacertificada/src/casacertificada/templates/tailored/base_admin.html",
+		"/Users/carlos/sources/casacertificada/src/casacertificada/static/tpl/tailored/estimate_form.html",
+		"/Users/carlos/sources/casacertificada/src/casacertificada/templates/tailored/admin.html",
+		"/Users/carlos/sources/casacertificada/src/casacertificada/templates/tailored/invitation.html",
+		"/Users/carlos/sources/casacertificada/src/casacertificada/static/tpl/admin/pros.html",
+		"/Users/carlos/sources/casacertificada/src/casacertificada/static/tpl/admin/bigs.html",
+		"/Users/carlos/sources/casacertificada/src/casacertificada/templates/admin/admin.html",
+		"/Users/carlos/sources/casacertificada/src/casacertificada/templates/auth/base.html"
+	],
+	"find":
+	{
+		"height": 45.0
+	},
+	"find_in_files":
+	{
+		"height": 111.0,
+		"where_history":
+		[
+			"/Users/carlos/sources/casacertificada/src/",
+			"/Users/carlos/sources/casacertificada",
+			"<open folders>",
+			"/Users/carlos/sources/casacertificada",
+			""
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"lib",
+			"app/",
+			"yeoman.dist",
+			"serve",
+			"error",
+			"title",
+			"reference",
+			"genre",
+			"io",
+			"loginH",
+			"incorrec",
+			"password.",
+			"passwordr",
+			"InnTBD",
+			"taskq",
+			"accept",
+			"taskq",
+			"certmo",
+			"cert",
+			"save",
+			"Location",
+			"random",
+			"pros.",
+			"techs",
+			"endesa",
+			"endesa_admin",
+			"endesa",
+			"endesa_admin",
+			"endesa",
+			"get_tai",
+			"zoho",
+			"endesa",
+			"put(s",
+			"endesa",
+			"tailored_admin",
+			"Endesa",
+			"endesa",
+			"get_i",
+			"endesa",
+			"big",
+			".pro",
+			"login.source",
+			"vent_",
+			"seasonal",
+			"auth.logout",
+			"\\n",
+			"(.*) (([\\.+_a-z0-9])*@([a-z0-9])*(\\.[a-z]{2,4})) (.*)",
+			"(.*) (([+_a-z0-9])*@([a-z0-9])*(\\.[a-z]{2,4})) (.*)",
+			"(.*) ([\\.+_a-z0-9])*@([a-z0-9])*(\\.[a-z]{2,4}) (.*)",
+			"(.*) (([+_a-z0-9])*@([a-z0-9])*(\\.[a-z]{2,4})) (.*)",
+			"(.*)(([+_a-z0-9])*@([a-z0-9])*(\\.[a-z]{2,4}))(.*)",
+			"[_a-z0-9-]+(\\.[_a-z0-9-]+)*@[a-z0-9-]+(\\.[a-z0-9-]+)*(\\.[a-z]{2,4}))",
+			"(.*)([_a-z0-9-]+(\\.[_a-z0-9-]+)*@[a-z0-9-]+(\\.[a-z0-9-]+)*(\\.[a-z]{2,4}))(.*)",
+			"^[_a-z0-9-]+(\\.[_a-z0-9-]+)*@[a-z0-9-]+(\\.[a-z0-9-]+)*(\\.[a-z]{2,4})$",
+			"^(([^<>()[\\]\\\\.,;:\\s@\\\"]+(\\.[^<>()[\\]\\\\.,;:\\s@\\\"]+)*)|(\\\n\".+\\\"))@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA\n-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$",
+			"appro",
+			"appr",
+			"app",
+			"logout.pro",
+			"logout.big",
+			"del =",
+			"delete",
+			"$timeout",
+			"techs_priority",
+			"building_",
+			"pro",
+			"pro.",
+			"config",
+			"conf",
+			"ó",
+			"Calefacc",
+			"max-",
+			"Boolean(tech.source)",
+			"Boolean(t",
+			"camara",
+			"logger",
+			"query",
+			"userna",
+			"/utils/get_geo_postal_codes/",
+			"refrech_types",
+			"pro",
+			"Pro",
+			"pro",
+			".then",
+			"pro_form_ctrl",
+			"pros",
+			"logou",
+			"set_com",
+			"sign",
+			"rela",
+			"appea",
+			"style",
+			"placeholder",
+			"ingroups",
+			"ingr",
+			"get_es",
+			"getes",
+			"logout_url",
+			"get_login_url",
+			"refre",
+			"get_est",
+			"order_by('by')",
+			"order_by('customer')",
+			"order_by('date')",
+			"CIF Cliente",
+			"date.c",
+			"Create",
+			"disc",
+			"quant",
+			"endesa",
+			"endesa p",
+			"energí",
+			"endesa p",
+			"reverse",
+			"GetI",
+			"get_item",
+			"billed",
+			"webapp",
+			"User",
+			"json",
+			"ndb",
+			"task",
+			"tasks",
+			"Engin",
+			"certs",
+			"get_ba",
+			"get_la",
+			"csv"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"src/",
+			"Radiolem",
+			"Radolem",
+			"admin_tailored",
+			"tailored",
+			"admin_tailored",
+			"Tailored",
+			"tailored",
+			",\\n",
+			"$2",
+			"$2@$3",
+			"$2@$3$4",
+			"$2",
+			"$1",
+			"$2",
+			"var del =",
+			"priority",
+			"",
+			"big.",
+			"from_source()",
+			"refresh_types",
+			"big",
+			"Big",
+			"big",
+			".success",
+			"order_by('user.email')",
+			"order_by('customer.full_name')",
+			"order_by('created')",
+			"Cliente",
+			"endesa",
+			"str($1)",
+			"self.area",
+			"round($1)",
+			"\\n  ret",
+			"",
+			"$1:",
+			"area <= $2",
+			">=",
+			"return ($1 * vat_value).round()",
+			"return ($1 * vat_value).round();",
+			"if (area <= $1) { return $2 * vat_value; }",
+			"if (area <= $1) { return $2 * vat_value; }\\n",
+			"if (area <= $1) {\\n\\thola",
+			"$1 $2 $3",
+			"PartnerBig",
+			"big",
+			"big/",
+			"}}",
+			"{{",
+			"step",
+			"cert",
+			",\\n",
+			"\\n",
+			"<input type=\"number\" class=\"input-text\"",
+			"<span class=\"input-title\">$1</span>",
+			"\"input-holder\"",
+			"\"controls controls-row\"",
+			"class=\"span12\"",
+			"\"controls controls-row\"",
+			"class=\"span12\"",
+			"\"controls controls-row\"",
+			"class=\"span12\"",
+			"\"controls controls-row\"",
+			"class=\"span12\"",
+			"\"controls controls-row\"",
+			"h1",
+			"<input class=\"span12\" ",
+			"\"controls controls-row\"",
+			"h1",
+			"content",
+			"&#125;",
+			"&#123;",
+			"",
+			"/static/img",
+			"",
+			"cc-typeahead-improved",
+			"",
+			"/static/img/pacman.jpg",
+			"",
+			"$1(current_hole, '$2', $event)$3",
+			"class=\"thumbnails span4\"",
+			"<div class=\"pull-right\">",
+			"class=\"thumbnails pull-left\"",
+			"style=\"margin-left:20px;\"",
+			"style=\"width:500px;\"",
+			", ",
+			"'$1'",
+			"$2",
+			"($1)",
+			"$1",
+			"\\n",
+			"",
+			"he1: $1, he4: $2",
+			"p<n+1>",
+			"p<n>",
+			"ag18",
+			"\\n",
+			"Certificación Energética",
+			"Certificación energética",
+			"http://www.comprarcasa.com/images/",
+			"ag5",
+			"ag8",
+			"$2",
+			"$1$2",
+			"$2",
+			"tab-pane clearfix",
+			"$rootScope.",
+			"https://www.iberdrola.es/webibd",
+			"\"https://www.iberdrola.es/webibd",
+			"webibd/admin",
+			"http://www.iberdrola.es/webibd/gc/prod/es/admin/css/",
+			"/static/img/",
+			"'$1',",
+			"requested_certs",
+			"",
+			".afternoon",
+			".noon",
+			".morning",
+			"error_suggest",
+			"<form ng-submit=\"save()\"",
+			"availability",
+			"",
+			"<div class=\"control\">\\n\\t<input$1>\\n</div>",
+			"<div class=\"control\">\\n<input$1>\\n</div>",
+			"<div class=\"control\"><input($1)></div>",
+			"$1",
+			"BaseHandler",
+			"Partner"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": false,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 3,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "Gruntfile.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 10273,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								8986,
+								8986
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true,
+							"word_separators": "./\\\\()\\\"\\'-:,.;<>~!@#%^&*|+=[]{}`~?"
+						},
+						"translation.x": 0.0,
+						"translation.y": 10554.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "app/scripts/stones.coffee",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 4136,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2563,
+								2563
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/CoffeeScript/CoffeeScript.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 3245.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "karma.conf.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1645,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								746,
+								746
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 8.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "bower.json",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 991,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								683,
+								683
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JSON.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 451.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "test/spec/stones/stones.coffee",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 337,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								234,
+								234
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/CoffeeScript/CoffeeScript.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 37.0
+	},
+	"input":
+	{
+		"height": 44.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.exec":
+	{
+		"height": 202.0
+	},
+	"output.find_results":
+	{
+		"height": 317.0
+	},
+	"output.jslint_result_view":
+	{
+		"height": 184.0
+	},
+	"project": "stones-client.sublime-project",
+	"replace":
+	{
+		"height": 84.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 500.0,
+		"selected_items":
+		[
+			[
+				"",
+				"~/sources/inntdb/inntdb.sublime-project"
+			]
+		],
+		"width": 380.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": true,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 225.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}
