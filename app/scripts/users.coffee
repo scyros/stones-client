@@ -33,7 +33,7 @@ class User
     }
 
 angular.module('stones')
-  .provider('User', User)
+  .provider('stones.User', User)
   .controller('stones.UsersListCtrl', [
     '$scope',
     '$routeParams',
