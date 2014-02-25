@@ -100,16 +100,28 @@ automate and standarize client-server communications.
             return cls;
           };
           scope.stStepDown = function() {
+            /*
+            Go one step down
+            */
+
             if (scope.current_page > 1) {
               return scope.current_page--;
             }
           };
           scope.stStepUp = function() {
+            /*
+            Go one step up
+            */
+
             if (scope.current_page < scope.total_pages) {
               return scope.current_page++;
             }
           };
           return scope.stGoStep = function(step) {
+            /*
+            Go to one specific step
+            */
+
             if (step > 1 && step < scope.total_pages) {
               return scope.current_page = step;
             }
@@ -171,6 +183,22 @@ automate and standarize client-server communications.
               ret.total_pages = data.total_pages;
             }
             return ret;
+          },
+          interceptor: {
+            response: function(_response) {
+              var ret;
+              ret = _response.resource;
+              if (_response.data.current_page != null) {
+                ret.current_page = _response.data.current_page;
+              }
+              if (_response.data.page_size != null) {
+                ret.page_size = _response.data.page_size;
+              }
+              if (_response.data.total_pages != null) {
+                ret.total_pages = _response.data.total_pages;
+              }
+              return ret;
+            }
           }
         },
         resetPassword: {

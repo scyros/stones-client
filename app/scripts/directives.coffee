@@ -34,12 +34,21 @@ angular.module('stones')
           return cls
 
         scope.stStepDown = () ->
+          ###
+          Go one step down
+          ###
           if scope.current_page > 1 then scope.current_page--
 
         scope.stStepUp = () ->
+          ###
+          Go one step up
+          ###
           if scope.current_page < scope.total_pages then scope.current_page++
 
         scope.stGoStep = (step) ->
+          ###
+          Go to one specific step
+          ###
           if step > 1 and step < scope.total_pages
             scope.current_page = step
     ]

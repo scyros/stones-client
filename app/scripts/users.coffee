@@ -37,6 +37,16 @@ class User
                   ret.page_size = data.page_size
                   ret.total_pages = data.total_pages
                 return ret
+              interceptor:
+                response: (_response) ->
+                  ret = _response.resource
+                  if _response.data.current_page?
+                    ret.current_page = _response.data.current_page
+                  if _response.data.page_size?
+                    ret.page_size = _response.data.page_size
+                  if _response.data.total_pages?
+                    ret.total_pages = _response.data.total_pages
+                  ret
             resetPassword:
               method: 'post'
               url: apiUrlPrefix + '/users/:key/password_reset'

@@ -81,6 +81,9 @@ describe 'Controller: UsersCtrl', () ->
     expect(scope.users[0].__id__).toBe 123
     expect(scope.users[1].__key__).toBe 'abd'
     expect(scope.users[1].__id__).toBe 124
+    expect(scope.users.current_page).toBe 1
+    expect(scope.users.page_size).toBe 20
+    expect(scope.users.total_pages).toBe 1
 
   it 'User query KO test', () ->
     httpBackend.expectGET(users_url_prefix).respond(500, {msgs: [{
@@ -139,7 +142,7 @@ describe 'Directive: stPagination', () ->
   it 'Check scope', () ->
     scope.current_page = 1
     scope.page_size = 20
-    scope.total_pages = 2
+    scope.total_pages = 1
     elm = compile('<div st-pagination></div>')(scope)
     scope.$digest()
-    expect(elm.find('li').length).toBe 4
+    expect(elm.find('li').length).toBe 3
