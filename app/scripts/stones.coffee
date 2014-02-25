@@ -51,4 +51,7 @@ stones.run [
     Stones inner variables initialization.
     ###
     _STONES_CACHE = $cacheFactory(_STONES_CACHE, 500);
+
+    # Set logged user if any
+    $rootScope.logged_user = $window.logged_user
 ]

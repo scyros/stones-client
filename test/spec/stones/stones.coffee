@@ -12,6 +12,7 @@ describe 'Controller: UsersCtrl', () ->
   httpBackend = null
   controller = null
   stonesUser = null
+  windowMock = null
   UsersCtrl = {}
   scope = {}
   fixtures = {
@@ -36,11 +37,15 @@ describe 'Controller: UsersCtrl', () ->
   fixtures.user = fixtures.users[0]
 
   # Initialize the controller and a mock scope
-  beforeEach inject ($controller, $rootScope, $httpBackend, _stonesUser_) ->
+  beforeEach inject ($controller, $rootScope, $httpBackend, _stonesUser_,
+      $window) ->
     scope = $rootScope.$new()
     httpBackend = $httpBackend
     controller = $controller
     stonesUser = _stonesUser_
+    windowMock = $window
+
+    windowMock.logged_user = fixtures.user
 
   afterEach () ->
     httpBackend.verifyNoOutstandingExpectation()
@@ -94,3 +99,10 @@ describe 'Controller: UsersCtrl', () ->
     httpBackend.flush()
     expect(login_url).toBe 'GoogleLoginURL'
 
+  it 'User logged present', () ->
+    httpBackend.expectGET(users_url_prefix).respond(fixtures.users)
+    UsersCtrl = controller 'stones.UsersListCtrl', {
+      $scope: scope
+    }
+    httpBackend.flush()
+    expect(scope.logged_user).toBe fixtures.user
