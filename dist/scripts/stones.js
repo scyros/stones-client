@@ -80,17 +80,17 @@ automate and standarize client-server communications.
           withCredentials: true,
           isArray: true,
           transformResponse: function(_data, headers) {
-            var ret;
+            var data, ret;
             if (typeof _data === 'string') {
-              ret = JSON.parse(_data);
+              data = JSON.parse(_data);
             } else if (typeof _data === 'object') {
-              ret = _data;
+              data = _data;
             }
-            if ('entities' in _data) {
-              ret = _data.entities;
-              ret.current_page = _data.current_page;
-              ret.page_size = _data.page_size;
-              ret.total_pages = _data.total_pages;
+            if ('entities' in data) {
+              ret = data.entities;
+              ret.current_page = data.current_page;
+              ret.page_size = data.page_size;
+              ret.total_pages = data.total_pages;
             }
             return ret;
           }

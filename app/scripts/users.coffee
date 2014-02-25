@@ -26,15 +26,15 @@ class User
               isArray: true
               transformResponse: (_data, headers) ->
                 if typeof _data is 'string'
-                  ret = JSON.parse(_data)
+                  data = JSON.parse(_data)
                 else if typeof _data is 'object'
-                  ret = _data
+                  data = _data
 
-                if ('entities' of _data)
-                  ret = _data.entities
-                  ret.current_page = _data.current_page
-                  ret.page_size = _data.page_size
-                  ret.total_pages = _data.total_pages
+                if ('entities' of data)
+                  ret = data.entities
+                  ret.current_page = data.current_page
+                  ret.page_size = data.page_size
+                  ret.total_pages = data.total_pages
                 return ret
             resetPassword:
               method: 'post'
