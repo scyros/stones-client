@@ -63,6 +63,25 @@ describe 'Controller: UsersCtrl', () ->
     expect(scope.users[1].__key__).toBe 'abd'
     expect(scope.users[1].__id__).toBe 124
 
+  it 'User paginated query OK test', () ->
+    httpBackend.expectGET(users_url_prefix + '?p=1')
+      .respond
+        current_page: 1
+        entities: fixtures.users
+        page_size: 20
+        total_pages: 1
+
+    UsersCtrl = controller 'stones.UsersListCtrl', {
+      $scope: scope
+      $routeParams: {p: 1}
+    }
+    httpBackend.flush()
+    expect(scope.users.length).toBe 2
+    expect(scope.users[0].__key__).toBe 'abc'
+    expect(scope.users[0].__id__).toBe 123
+    expect(scope.users[1].__key__).toBe 'abd'
+    expect(scope.users[1].__id__).toBe 124
+
   it 'User query KO test', () ->
     httpBackend.expectGET(users_url_prefix).respond(500, {msgs: [{
       msg: 'Server error',

@@ -19,6 +19,19 @@ class User
           {key: '@__key__'},
           {
             # Actions
+            query:
+              method: 'get'
+              url: apiUrlPrefix + '/users/:key'
+              withCredentials: true,
+              isArray: true
+              transformResponse: (_data, headers) ->
+                ret = _data
+                if 'entities' of _data
+                  ret = _data.entities
+                  ret.current_page = _data.current_page
+                  ret.page_size = _data.page_size
+                  ret.total_pages = _data.total_pages
+                return ret
             resetPassword:
               method: 'post'
               url: apiUrlPrefix + '/users/:key/password_reset'
