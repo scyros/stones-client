@@ -27,6 +27,10 @@ class User
               method: 'post'
               url: apiUrlPrefix + '/:provider/login',
               withCredentials: true
+              interceptor:
+                responseError: (_rejection) ->
+                  _rejection.headers('Location')
+
           }
 
   constructor: () ->

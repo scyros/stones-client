@@ -87,10 +87,10 @@ describe 'Controller: UsersCtrl', () ->
   it 'User OAuth2 login', () ->
     login_url = ''
     httpBackend.expectPOST(api_url_prefix + '/google/login?')
-      .respond(200, {url: 'GoogleLoginURL'})
+      .respond(302, '', {Location: 'GoogleLoginURL'})
     user = stonesUser.oauth2login({provider: 'google'}, {provider: 'google'})
-    user.$promise.then (data) ->
-      login_url = data.url
+    user.$promise.then (url) ->
+      login_url = url
     httpBackend.flush()
     expect(login_url).toBe 'GoogleLoginURL'
 
