@@ -19,11 +19,14 @@ class User
           {key: '@__key__'},
           {
             # Actions
-            resetPassword: {
-              method: 'post',
-              url: apiUrlPrefix + '/:key/password_reset/',
+            resetPassword:
+              method: 'post'
+              url: apiUrlPrefix + '/:key/password_reset/'
               withCredentials: true
-            }
+            oauth2login:
+              method: 'post'
+              url: apiUrlPrefix + '/:provider/login/',
+              withCredentials: true
           }
 
   constructor: () ->
@@ -33,11 +36,11 @@ class User
     }
 
 angular.module('stones')
-  .provider('stones.User', User)
+  .provider('stonesUser', User)
   .controller 'stones.UsersListCtrl', [
     '$scope',
     '$routeParams',
-    'User',
+    'stonesUser',
     (scope, $routeParams, User) ->
       scope.users = [];
 

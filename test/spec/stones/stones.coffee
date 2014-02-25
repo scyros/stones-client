@@ -10,6 +10,7 @@ describe 'Controller: UsersCtrl', () ->
   api_url_prefix = '/auth/users'
   httpBackend = null
   controller = null
+  stonesUser = null
   UsersCtrl = {}
   scope = {}
   fixtures = {
@@ -34,10 +35,11 @@ describe 'Controller: UsersCtrl', () ->
   fixtures.user = fixtures.users[0]
 
   # Initialize the controller and a mock scope
-  beforeEach inject ($controller, $rootScope, $httpBackend) ->
+  beforeEach inject ($controller, $rootScope, $httpBackend, _stonesUser_) ->
     scope = $rootScope.$new()
     httpBackend = $httpBackend
     controller = $controller
+    stonesUser = _stonesUser_
 
   afterEach () ->
     httpBackend.verifyNoOutstandingExpectation()
@@ -80,3 +82,14 @@ describe 'Controller: UsersCtrl', () ->
       }]})
     user.$resetPassword()
     httpBackend.flush()
+
+  it 'User OAuth2 login', () ->
+    login_url = ''
+    httpBackend.expectPOST(api_url_prefix + '/google/login?')
+      .respond(200, {url: 'GoogleLoginURL'})
+    user = stonesUser.oauth2login({provider: 'google'}, {provider: 'google'})
+    user.$promise.then (data) ->
+      login_url = data.url
+    httpBackend.flush()
+    expect(login_url).toBe 'GoogleLoginURL'
+
