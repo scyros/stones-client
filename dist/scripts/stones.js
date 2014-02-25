@@ -54,15 +54,18 @@ automate and standarize client-server communications.
       return {
         template: '<ul class="pagination"><li ng-class="stGetStepDownClass()"><a href="#" ng-click="stStepDown()">&laquo;</a></li><li ng-repeat="step in stSteps" ng-class="stGetStepClass(step)"><a href="#" ng-click="stGoStep(step)">{{ step }}</a></li><li ng-class="stGetStepUpClass()"><a href="#" ng-click="stStepUp()">&raquo;</a></li></ul>',
         link: function(scope, elm, attrs) {
-          var n;
-          scope.stSteps = (function() {
-            var _i, _ref, _results;
-            _results = [];
-            for (n = _i = 1, _ref = scope.total_pages; 1 <= _ref ? _i <= _ref : _i >= _ref; n = 1 <= _ref ? ++_i : --_i) {
-              _results.push(n);
-            }
-            return _results;
-          })();
+          scope.stSteps = [];
+          scope.$watch('total_pages', function() {
+            var n;
+            return scope.stSteps = (function() {
+              var _i, _ref, _results;
+              _results = [];
+              for (n = _i = 1, _ref = scope.total_pages; 1 <= _ref ? _i <= _ref : _i >= _ref; n = 1 <= _ref ? ++_i : --_i) {
+                _results.push(n);
+              }
+              return _results;
+            })();
+          });
           scope.stGetStepDownClass = function() {
             /*
             Sets previous button class

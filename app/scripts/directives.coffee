@@ -6,7 +6,10 @@ angular.module('stones')
     ($compile) ->
       template: '<ul class="pagination"><li ng-class="stGetStepDownClass()"><a href="#" ng-click="stStepDown()">&laquo;</a></li><li ng-repeat="step in stSteps" ng-class="stGetStepClass(step)"><a href="#" ng-click="stGoStep(step)">{{ step }}</a></li><li ng-class="stGetStepUpClass()"><a href="#" ng-click="stStepUp()">&raquo;</a></li></ul>'
       link: (scope, elm, attrs) ->
-        scope.stSteps = (n for n in [1..scope.total_pages])
+        scope.stSteps = []
+
+        scope.$watch 'total_pages', () ->
+          scope.stSteps = (n for n in [1..scope.total_pages])
 
         scope.stGetStepDownClass = () ->
           ###
