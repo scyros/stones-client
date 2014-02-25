@@ -6,7 +6,7 @@ class User
   This model is so important to authentication system.
   ###
 
-  apiUrlPrefix = '/auth/users'
+  apiUrlPrefix = '/auth'
   setApiUrlPrefix = (urlPrefix) ->
     apiUrlPrefix = urlPrefix
 
@@ -15,13 +15,13 @@ class User
     User Service constructor.
     Requires AngularJS Resource Module.
     ###
-    return $resource apiUrlPrefix + '/:key',
+    return $resource apiUrlPrefix + 'users/:key',
           {key: '@__key__'},
           {
             # Actions
             resetPassword:
               method: 'post'
-              url: apiUrlPrefix + '/:key/password_reset/'
+              url: apiUrlPrefix + 'users/:key/password_reset/'
               withCredentials: true
             oauth2login:
               method: 'post'
