@@ -25,8 +25,12 @@ class User
               withCredentials: true,
               isArray: true
               transformResponse: (_data, headers) ->
-                ret = _data
-                if _data.entities?
+                if typeof _data is 'string'
+                  ret = JSON.parse(_data)
+                else if typeof _data is 'object'
+                  ret = _data
+
+                if ('entities' of _data)
                   ret = _data.entities
                   ret.current_page = _data.current_page
                   ret.page_size = _data.page_size

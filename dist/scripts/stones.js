@@ -81,8 +81,12 @@ automate and standarize client-server communications.
           isArray: true,
           transformResponse: function(_data, headers) {
             var ret;
-            ret = _data;
-            if (_data.entities != null) {
+            if (typeof _data === 'string') {
+              ret = JSON.parse(_data);
+            } else if (typeof _data === 'object') {
+              ret = _data;
+            }
+            if ('entities' in _data) {
               ret = _data.entities;
               ret.current_page = _data.current_page;
               ret.page_size = _data.page_size;
