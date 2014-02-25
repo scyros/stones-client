@@ -54,6 +54,10 @@ automate and standarize client-server communications.
       return {
         template: '<ul class="pagination"><li ng-class="stGetStepDownClass()"><a href="#" ng-click="stStepDown()">&laquo;</a></li><li ng-repeat="step in stSteps" ng-class="stGetStepClass(step)"><a href="#" ng-click="stGoStep(step)">{{ step }}</a></li><li ng-class="stGetStepUpClass()"><a href="#" ng-click="stStepUp()">&raquo;</a></li></ul>',
         link: function(scope, elm, attrs) {
+          elm.find('a').bind('click', function(e) {
+            e.preventDefault();
+            return false;
+          });
           scope.stSteps = [];
           scope.$watch('total_pages', function() {
             var n;
@@ -97,7 +101,7 @@ automate and standarize client-server communications.
 
             var cls;
             cls = [];
-            if (step === scope.st_current_page) {
+            if (step === scope.current_page) {
               cls.push('active');
             }
             return cls;
