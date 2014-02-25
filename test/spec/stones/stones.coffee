@@ -7,7 +7,8 @@ describe 'Controller: UsersCtrl', () ->
   # load the controller's module
   beforeEach module 'stones'
 
-  api_url_prefix = '/auth/users'
+  api_url_prefix = '/auth'
+  users_url_prefix = api_url_prefix + '/users'
   httpBackend = null
   controller = null
   stonesUser = null
@@ -46,7 +47,7 @@ describe 'Controller: UsersCtrl', () ->
     httpBackend.verifyNoOutstandingRequest()
 
   it 'User query OK test', () ->
-    httpBackend.expectGET(api_url_prefix).respond(fixtures.users)
+    httpBackend.expectGET(users_url_prefix).respond(fixtures.users)
     UsersCtrl = controller 'stones.UsersListCtrl', {
       $scope: scope
     }
@@ -58,7 +59,7 @@ describe 'Controller: UsersCtrl', () ->
     expect(scope.users[1].__id__).toBe 124
 
   it 'User query KO test', () ->
-    httpBackend.expectGET(api_url_prefix).respond(500, {msgs: [{
+    httpBackend.expectGET(users_url_prefix).respond(500, {msgs: [{
       msg: 'Server error',
       level: 'error'
     }]})
@@ -69,13 +70,13 @@ describe 'Controller: UsersCtrl', () ->
     expect(scope.users.length).toBe 0
 
   it 'User reset password OK test', () ->
-    httpBackend.expectGET(api_url_prefix).respond(fixtures.users)
+    httpBackend.expectGET(users_url_prefix).respond(fixtures.users)
     UsersCtrl = controller 'stones.UsersListCtrl', {
       $scope: scope
     }
     httpBackend.flush()
     user = scope.users[0]
-    httpBackend.expectPOST(api_url_prefix + '/abc/password_reset')
+    httpBackend.expectPOST(users_url_prefix + '/abc/password_reset')
       .respond(200, {msgs: [{
         msg: 'Successful password reset email send.',
         level: 'success'
