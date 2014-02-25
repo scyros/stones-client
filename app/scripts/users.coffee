@@ -25,14 +25,11 @@ class User
               withCredentials: true
             oauth2login:
               method: 'post'
-              url: apiUrlPrefix + '/:provider/login',
-              withCredentials: true
+              url: apiUrlPrefix + '/:provider/login'
+              withCredentials: true,
               interceptor:
                 response: (_response) ->
-                  _response.headers('Location')
-                responseError: (_rejection) ->
-                  _rejection.headers('Location')
-
+                  _response.data
           }
 
   constructor: () ->
