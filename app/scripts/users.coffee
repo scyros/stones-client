@@ -28,6 +28,8 @@ class User
               url: apiUrlPrefix + '/:provider/login',
               withCredentials: true
               interceptor:
+                response: (_response) ->
+                  _response.headers('Location')
                 responseError: (_rejection) ->
                   _rejection.headers('Location')
 
