@@ -26,7 +26,7 @@ class User
               isArray: true
               transformResponse: (_data, headers) ->
                 ret = _data
-                if 'entities' of _data
+                if _data.entities?
                   ret = _data.entities
                   ret.current_page = _data.current_page
                   ret.page_size = _data.page_size
