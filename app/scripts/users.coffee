@@ -30,6 +30,7 @@ class User
                 else if typeof _data is 'object'
                   data = _data
 
+                ret = data
                 if ('entities' of data)
                   ret = data.entities
                   ret.current_page = data.current_page

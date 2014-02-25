@@ -45,7 +45,84 @@ automate and standarize client-server communications.
 }).call(this);
 
 /*
-//@ sourceMappingURL=stones.js.map
+//@ sourceMappingURL=app.js.map
+*/
+(function() {
+  'use strict';
+  angular.module('stones').directive('stPagination', [
+    '$compile', function($compile) {
+      return {
+        template: '<ul class="pagination"><li ng-class="stGetStepDownClass()"><a href="#" ng-click="stStepDown()">&laquo;</a></li><li ng-repeat="step in stSteps" ng-class="stGetStepClass(step)"><a href="#" ng-click="stGoStep(step)">{{ step }}</a></li><li ng-class="stGetStepUpClass()"><a href="#" ng-click="stStepUp()">&raquo;</a></li></ul>',
+        link: function(scope, elm, attrs) {
+          var n;
+          scope.stSteps = (function() {
+            var _i, _ref, _results;
+            _results = [];
+            for (n = _i = 1, _ref = scope.total_pages; 1 <= _ref ? _i <= _ref : _i >= _ref; n = 1 <= _ref ? ++_i : --_i) {
+              _results.push(n);
+            }
+            return _results;
+          })();
+          scope.stGetStepDownClass = function() {
+            /*
+            Sets previous button class
+            */
+
+            var cls;
+            cls = [];
+            if (scope.current_page >= 1) {
+              cls.push('disabled');
+            }
+            return cls;
+          };
+          scope.stGetStepUpClass = function() {
+            /*
+            Sets next button class
+            */
+
+            var cls;
+            cls = [];
+            if (scope.current_page <= scope.total_pages) {
+              cls.push('disabled');
+            }
+            return cls;
+          };
+          scope.stGetStepClass = function(step) {
+            /*
+            Sets disabled and active classes according to current step
+            */
+
+            var cls;
+            cls = [];
+            if (step === scope.st_current_page) {
+              cls.push('active');
+            }
+            return cls;
+          };
+          scope.stStepDown = function() {
+            if (scope.current_page > 1) {
+              return scope.current_page--;
+            }
+          };
+          scope.stStepUp = function() {
+            if (scope.current_page < scope.total_pages) {
+              return scope.current_page++;
+            }
+          };
+          return scope.stGoStep = function(step) {
+            if (step > 1 && step < scope.total_pages) {
+              return scope.current_page = step;
+            }
+          };
+        }
+      };
+    }
+  ]);
+
+}).call(this);
+
+/*
+//@ sourceMappingURL=directives.js.map
 */
 (function() {
   'use strict';
@@ -86,6 +163,7 @@ automate and standarize client-server communications.
             } else if (typeof _data === 'object') {
               data = _data;
             }
+            ret = data;
             if ('entities' in data) {
               ret = data.entities;
               ret.current_page = data.current_page;

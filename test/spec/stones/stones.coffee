@@ -125,3 +125,21 @@ describe 'Controller: UsersCtrl', () ->
     }
     httpBackend.flush()
     expect(scope.logged_user).toBe fixtures.user
+
+describe 'Directive: stPagination', () ->
+  beforeEach module 'stones'
+
+  compile = null
+  scope = null
+
+  beforeEach inject ($rootScope, $compile) ->
+    compile = $compile
+    scope = $rootScope.$new()
+
+  it 'Check scope', () ->
+    scope.current_page = 1
+    scope.page_size = 20
+    scope.total_pages = 2
+    elm = compile('<div st-pagination></div>')(scope)
+    scope.$digest()
+    expect(elm.find('li').length).toBe 4
