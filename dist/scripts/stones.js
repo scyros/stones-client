@@ -1,1 +1,136 @@
-(function(){"use strict";var a,b;b=null,a=angular.module("stones",["ngCookies","ngSanitize","ngRoute","ngResource","ngAnimate","angular-growl"]),a.config(["$locationProvider","growlProvider","$httpProvider",function(a,b,c){return a.hashPrefix("!"),b.onlyUniqueMessages(!1),b.globalTimeToLive(5e3),b.globalEnableHtml(!0),b.messagesKey("msgs"),b.messageTextKey("msg"),b.messageSeverityKey("level"),c.responseInterceptors.push(b.serverMessagesInterceptor)}]),a.run(["$rootScope","$cacheFactory","$window",function(a,c,d){return b=c(b,500),a.logged_user=d.logged_user}])}).call(this),function(){"use strict";var a;a=function(){function a(){return{$get:["$resource",b],setApiUrlPrefix:d}}var b,c,d;return c="/auth",d=function(a){return c=a},b=function(a){return a(c+"/users/:key",{key:"@__key__"},{query:{method:"get",url:c+"/users/:key",withCredentials:!0,isArray:!0,transformResponse:function(a){var b;return b=a,null!=a.entities&&(b=a.entities,b.current_page=a.current_page,b.page_size=a.page_size,b.total_pages=a.total_pages),b}},resetPassword:{method:"post",url:c+"/users/:key/password_reset",withCredentials:!0},oauth2login:{method:"post",url:c+"/:provider/login",withCredentials:!0,interceptor:{response:function(a){return a.data}}}})},a}(),angular.module("stones").provider("stonesUser",a).controller("stones.UsersListCtrl",["$scope","$routeParams","stonesUser",function(a,b,c){a.users=[],c.query(b,function(b){a.users=b})}])}.call(this);
+/*
+# Stones _(Client Side)_
+
+Library built on top of AngularJS to work in conjunction with Stones Server to
+automate and standarize client-server communications.
+*/
+
+
+(function() {
+  'use strict';
+  var stones, _STONES_CACHE;
+
+  _STONES_CACHE = null;
+
+  stones = angular.module('stones', ['ngCookies', 'ngSanitize', 'ngRoute', 'ngResource', 'ngAnimate', 'angular-growl']);
+
+  stones.config([
+    '$locationProvider', 'growlProvider', '$httpProvider', function($locationProvider, growlProvider, $httpProvider) {
+      /*
+      Stones dependencies configuration.
+      */
+
+      $locationProvider.hashPrefix('!');
+      growlProvider.onlyUniqueMessages(false);
+      growlProvider.globalTimeToLive(5000);
+      growlProvider.globalEnableHtml(true);
+      growlProvider.messagesKey('msgs');
+      growlProvider.messageTextKey('msg');
+      growlProvider.messageSeverityKey('level');
+      return $httpProvider.responseInterceptors.push(growlProvider.serverMessagesInterceptor);
+    }
+  ]);
+
+  stones.run([
+    '$rootScope', '$cacheFactory', '$window', function($rootScope, $cacheFactory, $window) {
+      /*
+      Stones inner variables initialization.
+      */
+
+      _STONES_CACHE = $cacheFactory(_STONES_CACHE, 500);
+      return $rootScope.logged_user = $window.logged_user;
+    }
+  ]);
+
+}).call(this);
+
+/*
+//@ sourceMappingURL=stones.js.map
+*/
+(function() {
+  'use strict';
+  var User;
+
+  User = (function() {
+    /*
+    Represents a user of the application.
+    This model is so important to authentication system.
+    */
+
+    var $get, apiUrlPrefix, setApiUrlPrefix;
+
+    apiUrlPrefix = '/auth';
+
+    setApiUrlPrefix = function(urlPrefix) {
+      return apiUrlPrefix = urlPrefix;
+    };
+
+    $get = function($resource) {
+      /*
+      User Service constructor.
+      Requires AngularJS Resource Module.
+      */
+
+      return $resource(apiUrlPrefix + '/users/:key', {
+        key: '@__key__'
+      }, {
+        query: {
+          method: 'get',
+          url: apiUrlPrefix + '/users/:key',
+          withCredentials: true,
+          isArray: true,
+          transformResponse: function(_data, headers) {
+            var ret;
+            ret = _data;
+            if (_data.entities != null) {
+              ret = _data.entities;
+              ret.current_page = _data.current_page;
+              ret.page_size = _data.page_size;
+              ret.total_pages = _data.total_pages;
+            }
+            return ret;
+          }
+        },
+        resetPassword: {
+          method: 'post',
+          url: apiUrlPrefix + '/users/:key/password_reset',
+          withCredentials: true
+        },
+        oauth2login: {
+          method: 'post',
+          url: apiUrlPrefix + '/:provider/login',
+          withCredentials: true,
+          interceptor: {
+            response: function(_response) {
+              return _response.data;
+            }
+          }
+        }
+      });
+    };
+
+    function User() {
+      return {
+        $get: ['$resource', $get],
+        setApiUrlPrefix: setApiUrlPrefix
+      };
+    }
+
+    return User;
+
+  })();
+
+  angular.module('stones').provider('stonesUser', User).controller('stones.UsersListCtrl', [
+    '$scope', '$routeParams', 'stonesUser', function(scope, $routeParams, User) {
+      scope.users = [];
+      User.query($routeParams, function(users) {
+        scope.users = users;
+      });
+    }
+  ]);
+
+}).call(this);
+
+/*
+//@ sourceMappingURL=users.js.map
+*/
