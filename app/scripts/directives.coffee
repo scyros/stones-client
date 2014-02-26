@@ -3,17 +3,23 @@
 angular.module('stones')
   .directive 'stPagination', [
     '$compile',
-    ($compile) ->
+    '$timeout',
+    ($compile, $timeout) ->
       template: '<ul class="pagination"><li ng-class="stGetStepDownClass()"><a href="#" ng-click="stStepDown()">&laquo;</a></li><li ng-repeat="step in stSteps" ng-class="stGetStepClass(step)"><a href="#" ng-click="stGoStep(step)">{{ step }}</a></li><li ng-class="stGetStepUpClass()"><a href="#" ng-click="stStepUp()">&raquo;</a></li></ul>'
       link: (scope, elm, attrs) ->
-        elm.find('a')
-          .bind 'click', (e) ->
-            e.preventDefault()
-            false
         scope.stSteps = []
 
         scope.$watch 'total_pages', () ->
           scope.stSteps = (n for n in [1..scope.total_pages])
+        scope.$watch 'stSteps', () ->
+          $timeout () ->
+            elm.find('a')
+              .bind 'click', (e) ->
+                e.preventDefault()
+                false
+              return
+          , 500
+          return
 
         scope.stGetStepDownClass = () ->
           ###

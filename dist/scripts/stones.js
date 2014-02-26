@@ -50,14 +50,10 @@ automate and standarize client-server communications.
 (function() {
   'use strict';
   angular.module('stones').directive('stPagination', [
-    '$compile', function($compile) {
+    '$compile', '$timeout', function($compile, $timeout) {
       return {
         template: '<ul class="pagination"><li ng-class="stGetStepDownClass()"><a href="#" ng-click="stStepDown()">&laquo;</a></li><li ng-repeat="step in stSteps" ng-class="stGetStepClass(step)"><a href="#" ng-click="stGoStep(step)">{{ step }}</a></li><li ng-class="stGetStepUpClass()"><a href="#" ng-click="stStepUp()">&raquo;</a></li></ul>',
         link: function(scope, elm, attrs) {
-          elm.find('a').bind('click', function(e) {
-            e.preventDefault();
-            return false;
-          });
           scope.stSteps = [];
           scope.$watch('total_pages', function() {
             var n;
@@ -69,6 +65,14 @@ automate and standarize client-server communications.
               }
               return _results;
             })();
+          });
+          scope.$watch('stSteps', function() {
+            $timeout(function() {
+              elm.find('a').bind('click', function(e) {
+                e.preventDefault();
+                return false;
+              });
+            }, 500);
           });
           scope.stGetStepDownClass = function() {
             /*
