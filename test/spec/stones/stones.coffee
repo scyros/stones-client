@@ -129,6 +129,15 @@ describe 'Controller: UsersCtrl', () ->
     httpBackend.flush()
     expect(scope.logged_user).toBe fixtures.user
 
+  it 'Saving a user', () ->
+    new_user = angular.copy(fixtures.user)
+    delete new_user.__key__
+    delete new_user.__id__
+    httpBackend.expectPOST(users_url_prefix).respond(200, fixtures.user)
+    user = stonesUser.save(new_user)
+    httpBackend.flush()
+
+
 describe 'Directive: stPagination', () ->
   beforeEach module 'stones'
 

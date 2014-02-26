@@ -15,13 +15,13 @@ class User
     User Service constructor.
     Requires AngularJS Resource Module.
     ###
-    return $resource apiUrlPrefix + '/users/:Id',
-          {Id: '@__key__'},
+    return $resource apiUrlPrefix + '/users/:key',
+          {key: '@__key__'},
           {
             # Actions
             query:
               method: 'get'
-              url: apiUrlPrefix + '/users/:Id'
+              url: apiUrlPrefix + '/users/:key'
               withCredentials: true,
               isArray: true
               transformResponse: (_data, headers) ->
@@ -47,9 +47,19 @@ class User
                   if _response.data.total_pages?
                     ret.total_pages = _response.data.total_pages
                   ret
+            save:
+              method: 'post'
+              withCredentials: true
+              interceptor:
+                request: (_request) ->
+                  console.log arguments
+                  _request
+                response: (_response) ->
+                  console.log arguments
+                  _response
             resetPassword:
               method: 'post'
-              url: apiUrlPrefix + '/users/:Id/password_reset'
+              url: apiUrlPrefix + '/users/:key/password_reset'
               withCredentials: true
             oauth2login:
               method: 'post'
