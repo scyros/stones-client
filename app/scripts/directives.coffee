@@ -1,5 +1,9 @@
 'use strict'
 
+###
+Pagination directive.
+It uses Bootstrap pagination CSS classes.
+###
 angular.module('stones')
   .directive 'stPagination', [
     '$compile',
@@ -65,3 +69,20 @@ angular.module('stones')
           if step > 1 and step < scope.total_pages
             scope.current_page = step
     ]
+
+###
+Tooltip directive.
+It uses Bootstrap tooltip.
+###
+angular.module('stones')
+  .directive 'stTitle', [
+    '$compile',
+    ($compile) ->
+      restrict: 'A'
+      link: (scope, elm, attr) ->
+        title = attrs.stTitle
+        elm.attr 'title', title
+        elm.tooltip
+          title: title
+          container: 'body'
+  ]

@@ -49,6 +49,11 @@ automate and standarize client-server communications.
 */
 (function() {
   'use strict';
+  /*
+  Pagination directive.
+  It uses Bootstrap pagination CSS classes.
+  */
+
   angular.module('stones').directive('stPagination', [
     '$compile', '$timeout', function($compile, $timeout) {
       return {
@@ -137,6 +142,29 @@ automate and standarize client-server communications.
               return scope.current_page = step;
             }
           };
+        }
+      };
+    }
+  ]);
+
+  /*
+  Tooltip directive.
+  It uses Bootstrap tooltip.
+  */
+
+
+  angular.module('stones').directive('stTitle', [
+    '$compile', function($compile) {
+      return {
+        restrict: 'A',
+        link: function(scope, elm, attr) {
+          var title;
+          title = attrs.stTitle;
+          elm.attr('title', title);
+          return elm.tooltip({
+            title: title,
+            container: 'body'
+          });
         }
       };
     }
