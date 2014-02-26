@@ -136,6 +136,13 @@ describe 'Controller: UsersCtrl', () ->
     httpBackend.expectPOST(users_url_prefix).respond(200, fixtures.user)
     user = stonesUser.save(new_user)
     httpBackend.flush()
+    expect(user.__key__).toBe fixtures.user.__key__
+    expect(user.__id__).toBe fixtures.user.__id__
+    httpBackend.expectPUT(users_url_prefix + '/abc').respond(200, fixtures.user)
+    user.$update()
+    httpBackend.flush()
+    expect(user.__key__).toBe fixtures.user.__key__
+    expect(user.__id__).toBe fixtures.user.__id__
 
 
 describe 'Directive: stPagination', () ->

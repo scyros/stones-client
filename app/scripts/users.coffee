@@ -47,16 +47,9 @@ class User
                   if _response.data.total_pages?
                     ret.total_pages = _response.data.total_pages
                   ret
-            save:
-              method: 'post'
+            update:
+              method: 'put'
               withCredentials: true
-              interceptor:
-                request: (_request) ->
-                  console.log arguments
-                  _request
-                response: (_response) ->
-                  console.log arguments
-                  _response
             resetPassword:
               method: 'post'
               url: apiUrlPrefix + '/users/:key/password_reset'

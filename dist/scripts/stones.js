@@ -208,19 +208,9 @@ automate and standarize client-server communications.
             }
           }
         },
-        save: {
-          method: 'post',
-          withCredentials: true,
-          interceptor: {
-            request: function(_request) {
-              console.log(arguments);
-              return _request;
-            },
-            response: function(_response) {
-              console.log(arguments);
-              return _response;
-            }
-          }
+        update: {
+          method: 'put',
+          withCredentials: true
         },
         resetPassword: {
           method: 'post',
