@@ -170,6 +170,28 @@ automate and standarize client-server communications.
     }
   ]);
 
+  /*
+  100% height directive.
+  Sets box height to the maximum possible within body bounds.
+  */
+
+
+  angular.module('stones').directive('stHeight100', [
+    function() {
+      return {
+        restrict: 'A',
+        link: function(scope, _elm, attrs) {
+          var body_height, elm, height, top;
+          elm = $(_elm);
+          body_height = $('body').height();
+          top = elm.offset().top;
+          height = body_height - top;
+          return elm.height(height);
+        }
+      };
+    }
+  ]);
+
 }).call(this);
 
 /*

@@ -86,3 +86,19 @@ angular.module('stones')
           title: title
           container: 'body'
   ]
+
+###
+100% height directive.
+Sets box height to the maximum possible within body bounds.
+###
+angular.module('stones')
+  .directive 'stHeight100', [
+    () ->
+      restrict: 'A'
+      link: (scope, _elm, attrs) ->
+        elm = $(_elm)
+        body_height = $('body').height()
+        top = elm.offset().top
+        height = body_height - top
+        elm.height(height)
+  ]
