@@ -80,7 +80,7 @@ angular.module('stones')
     ($compile) ->
       restrict: 'A'
       link: (scope, elm, attr) ->
-        title = attrs.stTitle
+        title = attr.stTitle
         elm.attr 'title', title
         elm.tooltip
           title: title

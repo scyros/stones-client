@@ -159,7 +159,7 @@ automate and standarize client-server communications.
         restrict: 'A',
         link: function(scope, elm, attr) {
           var title;
-          title = attrs.stTitle;
+          title = attr.stTitle;
           elm.attr('title', title);
           return elm.tooltip({
             title: title,
