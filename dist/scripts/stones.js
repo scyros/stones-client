@@ -167,12 +167,12 @@ automate and standarize client-server communications.
       Requires AngularJS Resource Module.
       */
 
-      return $resource(apiUrlPrefix + '/users/:Id', {
-        Id: '@__key__'
+      return $resource(apiUrlPrefix + '/users/:key', {
+        key: '@__key__'
       }, {
         query: {
           method: 'get',
-          url: apiUrlPrefix + '/users/:Id',
+          url: apiUrlPrefix + '/users/:key',
           withCredentials: true,
           isArray: true,
           transformResponse: function(_data, headers) {
@@ -208,9 +208,23 @@ automate and standarize client-server communications.
             }
           }
         },
+        save: {
+          method: 'post',
+          withCredentials: true,
+          interceptor: {
+            request: function(_request) {
+              console.log(arguments);
+              return _request;
+            },
+            response: function(_response) {
+              console.log(arguments);
+              return _response;
+            }
+          }
+        },
         resetPassword: {
           method: 'post',
-          url: apiUrlPrefix + '/users/:Id/password_reset',
+          url: apiUrlPrefix + '/users/:key/password_reset',
           withCredentials: true
         },
         oauth2login: {
