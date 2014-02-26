@@ -149,6 +149,28 @@ automate and standarize client-server communications.
 */
 (function() {
   'use strict';
+  angular.module('stones').filter('stTriState', function() {
+    return function(input) {
+      var out;
+      out = '';
+      if (input === true) {
+        out += '<i class="fa fa-check-circle" style="color:green;"></i> ';
+      } else if (input === false) {
+        out += '<i class="fa fa-times-circle" style="color:red;"></i> ';
+      } else {
+        out += '<i class="fa fa-question-circle" style="color:yellow;"></i> ';
+      }
+      return out;
+    };
+  });
+
+}).call(this);
+
+/*
+//@ sourceMappingURL=filters.js.map
+*/
+(function() {
+  'use strict';
   var User;
 
   User = (function() {
