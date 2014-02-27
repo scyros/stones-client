@@ -157,9 +157,9 @@ automate and standarize client-server communications.
     '$compile', function($compile) {
       return {
         restrict: 'A',
-        link: function(scope, elm, attr) {
+        link: function(scope, elm, attrs) {
           var title;
-          title = attr.stTitle;
+          title = attrs.stTitle;
           elm.attr('title', title);
           return elm.tooltip({
             title: title,
@@ -187,6 +187,38 @@ automate and standarize client-server communications.
           top = elm.offset().top;
           height = body_height - top;
           return elm.height(height);
+        }
+      };
+    }
+  ]);
+
+  /*
+  No navigation directive.
+  Prevents anchor default behavior.
+  It prevents from follow links in all anchors inside element where the directive
+  has been declarated.
+  If that element is an anchor itself, its behavior is modified.
+  */
+
+
+  angular.module('stones').directive('stNoNav', [
+    function() {
+      return {
+        restrict: 'A',
+        link: function(scope, _elm, attrs) {
+          var elm;
+          elm = $(_elm);
+          if (elm.prop('tagName').toLowerCase() === 'a') {
+            return elm.bind('click', function(e) {
+              e.preventDefault();
+              return false;
+            });
+          } else {
+            return elm.find('a').bind('click', function(e) {
+              e.preventDefault();
+              return false;
+            });
+          }
         }
       };
     }

@@ -79,8 +79,8 @@ angular.module('stones')
     '$compile',
     ($compile) ->
       restrict: 'A'
-      link: (scope, elm, attr) ->
-        title = attr.stTitle
+      link: (scope, elm, attrs) ->
+        title = attrs.stTitle
         elm.attr 'title', title
         elm.tooltip
           title: title
@@ -101,4 +101,27 @@ angular.module('stones')
         top = elm.offset().top
         height = body_height - top
         elm.height(height)
+  ]
+
+###
+No navigation directive.
+Prevents anchor default behavior.
+It prevents from follow links in all anchors inside element where the directive
+has been declarated.
+If that element is an anchor itself, its behavior is modified.
+###
+angular.module('stones')
+  .directive 'stNoNav', [
+    () ->
+      restrict: 'A'
+      link: (scope, _elm, attrs) ->
+        elm = $(_elm)
+        if elm.prop('tagName').toLowerCase() is 'a'
+          elm.bind 'click', (e) ->
+            e.preventDefault()
+            false
+        else
+          elm.find('a').bind 'click', (e) ->
+            e.preventDefault()
+            false
   ]
