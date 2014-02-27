@@ -85,6 +85,7 @@ angular.module('stones')
         elm.tooltip
           title: title
           container: 'body'
+          placement: 'auto bottom'
   ]
 
 ###

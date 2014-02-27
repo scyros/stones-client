@@ -163,7 +163,8 @@ automate and standarize client-server communications.
           elm.attr('title', title);
           return elm.tooltip({
             title: title,
-            container: 'body'
+            container: 'body',
+            placement: 'auto bottom'
           });
         }
       };
