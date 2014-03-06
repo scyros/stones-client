@@ -42,6 +42,63 @@ automate and standarize client-server communications.
     }
   ]);
 
+  /*
+  Returns the default actions related to CRUD operations with Stones Server
+  */
+
+
+  stones.factory('stResourceActionsBuilder', [
+    function() {
+      var default_actions;
+      default_actions = {
+        query: {
+          method: 'get',
+          withCredentials: true,
+          isArray: true,
+          transformResponse: function(_data, headers) {
+            var data, ret;
+            if (typeof _data === 'string') {
+              data = JSON.parse(_data);
+            } else if (typeof _data === 'object') {
+              data = _data;
+            }
+            ret = data;
+            if ('entities' in data) {
+              ret = data.entities;
+              ret.current_page = data.current_page;
+              ret.page_size = data.page_size;
+              ret.total_pages = data.total_pages;
+            }
+            return ret;
+          },
+          interceptor: {
+            response: function(_response) {
+              var ret;
+              ret = _response.resource;
+              if (_response.data.current_page != null) {
+                ret.current_page = _response.data.current_page;
+              }
+              if (_response.data.page_size != null) {
+                ret.page_size = _response.data.page_size;
+              }
+              if (_response.data.total_pages != null) {
+                ret.total_pages = _response.data.total_pages;
+              }
+              return ret;
+            }
+          }
+        },
+        update: {
+          method: 'put',
+          withCredentials: true
+        }
+      };
+      return function() {
+        return angular.copy(default_actions);
+      };
+    }
+  ]);
+
 }).call(this);
 
 /*
@@ -272,57 +329,14 @@ automate and standarize client-server communications.
       return apiUrlPrefix = urlPrefix;
     };
 
-    $get = function($resource) {
+    $get = function($resource, actions_builder) {
       /*
       User Service constructor.
       Requires AngularJS Resource Module.
       */
 
-      return $resource(apiUrlPrefix + '/users/:key', {
-        key: '@__key__'
-      }, {
-        query: {
-          method: 'get',
-          url: apiUrlPrefix + '/users/:key',
-          withCredentials: true,
-          isArray: true,
-          transformResponse: function(_data, headers) {
-            var data, ret;
-            if (typeof _data === 'string') {
-              data = JSON.parse(_data);
-            } else if (typeof _data === 'object') {
-              data = _data;
-            }
-            ret = data;
-            if ('entities' in data) {
-              ret = data.entities;
-              ret.current_page = data.current_page;
-              ret.page_size = data.page_size;
-              ret.total_pages = data.total_pages;
-            }
-            return ret;
-          },
-          interceptor: {
-            response: function(_response) {
-              var ret;
-              ret = _response.resource;
-              if (_response.data.current_page != null) {
-                ret.current_page = _response.data.current_page;
-              }
-              if (_response.data.page_size != null) {
-                ret.page_size = _response.data.page_size;
-              }
-              if (_response.data.total_pages != null) {
-                ret.total_pages = _response.data.total_pages;
-              }
-              return ret;
-            }
-          }
-        },
-        update: {
-          method: 'put',
-          withCredentials: true
-        },
+      var actions;
+      actions = {
         resetPassword: {
           method: 'post',
           url: apiUrlPrefix + '/users/:key/password_reset',
@@ -338,12 +352,16 @@ automate and standarize client-server communications.
             }
           }
         }
-      });
+      };
+      angular.extend(actions, actions_builder());
+      return $resource(apiUrlPrefix + '/users/:key', {
+        key: '@__key__'
+      }, actions);
     };
 
     function User() {
       return {
-        $get: ['$resource', $get],
+        $get: ['$resource', 'stResourceActionsBuilder', $get],
         setApiUrlPrefix: setApiUrlPrefix
       };
     }
