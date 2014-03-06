@@ -80,6 +80,9 @@ stones.factory 'stResourceActionsBuilder', [
             ret.total_pages = data.total_pages
           return ret
         interceptor:
+          request: (_request) ->
+            console.log _request
+            return _request
           response: (_response) ->
             ret = _response.resource
             if _response.data.current_page?

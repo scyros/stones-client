@@ -72,6 +72,10 @@ automate and standarize client-server communications.
             return ret;
           },
           interceptor: {
+            request: function(_request) {
+              console.log(_request);
+              return _request;
+            },
             response: function(_response) {
               var ret;
               ret = _response.resource;
