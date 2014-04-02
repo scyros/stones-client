@@ -120,9 +120,7 @@ angular.module('stones')
         if elm.prop('tagName').toLowerCase() is 'a'
           elm.bind 'click', (e) ->
             e.preventDefault()
-            false
         else
           elm.find('a').bind 'click', (e) ->
             e.preventDefault()
-            false
   ]

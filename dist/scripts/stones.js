@@ -272,13 +272,11 @@ automate and standarize client-server communications.
           elm = $(_elm);
           if (elm.prop('tagName').toLowerCase() === 'a') {
             return elm.bind('click', function(e) {
-              e.preventDefault();
-              return false;
+              return e.preventDefault();
             });
           } else {
             return elm.find('a').bind('click', function(e) {
-              e.preventDefault();
-              return false;
+              return e.preventDefault();
             });
           }
         }
