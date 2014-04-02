@@ -284,6 +284,95 @@ automate and standarize client-server communications.
     }
   ]);
 
+  /*
+  Spy directives.
+  Allows DOM movement accordingly with sections positions.
+  Inspired in: https://gist.github.com/alxhill/6886760
+  */
+
+
+  angular.module('stones').directive('stSpy', [
+    '$window', function($window) {
+      return {
+        restrict: 'A',
+        require: '^stScrollSpy',
+        link: function(scope, elm, attrs, stScrollSpy) {
+          var speed, _ref;
+          speed = (_ref = attrs.stSpeed) != null ? _ref : 1500;
+          stScrollSpy.addSpy({
+            id: attrs.stSpy,
+            "in": function() {
+              return elm.addClass('active');
+            },
+            out: function() {
+              return elm.removeClass('active');
+            }
+          });
+          return elm.bind('click', function(e) {
+            return $('html, body').animate({
+              scrollTop: $('#' + attrs.stSpy).offset().top
+            }, speed);
+          });
+        }
+      };
+    }
+  ]);
+
+  angular.module('stones').directive('stScrollSpy', [
+    '$window', function($window) {
+      return {
+        restrict: 'A',
+        controller: [
+          '$scope', function(scope) {
+            scope.spies = [];
+            this.addSpy = function(spyObj) {
+              return scope.spies.push(spyObj);
+            };
+          }
+        ],
+        link: function(scope, elm, attrs) {
+          var spyElems;
+          spyElems = [];
+          scope.$watch('spies', function(spies) {
+            var spy, _i, _len, _results;
+            _results = [];
+            for (_i = 0, _len = spies.length; _i < _len; _i++) {
+              spy = spies[_i];
+              if (spyElems[spy.id] == null) {
+                _results.push(spyElems[spy.id] = $('#' + spy.id));
+              } else {
+                _results.push(void 0);
+              }
+            }
+            return _results;
+          });
+          return $($window).scroll(function() {
+            var highlightSpy, pos, spy, _i, _len, _ref;
+            highlightSpy = null;
+            _ref = scope.spies;
+            for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+              spy = _ref[_i];
+              spy.out();
+              spyElems[spy.id] = spyElems[spy.id].length === 0 ? $('#' + spy.id) : spyElems[spy.id];
+              if (spyElems[spy.id].length !== 0) {
+                if ((pos = spyElems[spy.id].offset().top) - $window.scrollY <= 0) {
+                  spy.pos = pos;
+                  if (highlightSpy == null) {
+                    highlightSpy = spy;
+                  }
+                  if (highlightSpy.pos < spy.pos) {
+                    highlightSpy = spy;
+                  }
+                }
+              }
+            }
+            return highlightSpy != null ? highlightSpy["in"]() : void 0;
+          });
+        }
+      };
+    }
+  ]);
+
 }).call(this);
 
 /*

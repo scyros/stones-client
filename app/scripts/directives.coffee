@@ -124,3 +124,71 @@ angular.module('stones')
           elm.find('a').bind 'click', (e) ->
             e.preventDefault()
   ]
+
+###
+Spy directives.
+Allows DOM movement accordingly with sections positions.
+Inspired in: https://gist.github.com/alxhill/6886760
+###
+angular.module('stones')
+  .directive 'stSpy', [
+    '$window',
+    ($window) ->
+      restrict: 'A'
+      require: '^stScrollSpy'
+      link: (scope, elm, attrs, stScrollSpy) ->
+        speed = attrs.stSpeed ? 1500
+        stScrollSpy.addSpy
+          id: attrs.stSpy
+          in: -> elm.addClass 'active'
+          out: -> elm.removeClass 'active'
+
+        elm.bind 'click', (e) ->
+          $('html, body').animate
+            scrollTop: $('#' + attrs.stSpy).offset().top
+          , speed
+  ]
+
+angular.module('stones')
+  .directive 'stScrollSpy', [
+    '$window',
+    ($window) ->
+      restrict: 'A'
+      controller: [
+        '$scope',
+        (scope) ->
+          scope.spies = []
+          @addSpy = (spyObj) -> scope.spies.push spyObj
+          return
+      ]
+      link: (scope, elm, attrs) ->
+        spyElems = []
+
+        scope.$watch 'spies', (spies) ->
+          for spy in spies
+            unless spyElems[spy.id]?
+              spyElems[spy.id] = $('#' + spy.id)
+
+        $($window).scroll ->
+          highlightSpy = null
+          for spy in scope.spies
+            spy.out()
+
+            # the elem might not have been available when it was originally cached,
+            # so we check again to get another element in case this one doesn't exist.
+            spyElems[spy.id] =
+              if spyElems[spy.id].length is 0
+                $('#' + spy.id)
+              else
+                spyElems[spy.id]
+
+            # the element could still not exist, so we check first to avoid errors
+            if spyElems[spy.id].length isnt 0
+              if (pos = spyElems[spy.id].offset().top) - $window.scrollY <= 0
+                spy.pos = pos
+                highlightSpy ?= spy
+                if highlightSpy.pos < spy.pos
+                  highlightSpy = spy
+
+          highlightSpy?.in()
+  ]
