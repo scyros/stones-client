@@ -8,7 +8,19 @@ automate and standarize client-server communications.
 
 (function() {
   'use strict';
-  var stones, _STONES_CACHE;
+  var stones, uniqueId, _STONES_CACHE;
+
+  uniqueId = function(length) {
+    var id;
+    if (length == null) {
+      length = 8;
+    }
+    id = "";
+    while (id.length < length) {
+      id += Math.random().toString(36).substr(2);
+    }
+    return id.substr(0, length);
+  };
 
   _STONES_CACHE = null;
 
@@ -367,6 +379,270 @@ automate and standarize client-server communications.
               }
             }
             return highlightSpy != null ? highlightSpy["in"]() : void 0;
+          });
+        }
+      };
+    }
+  ]);
+
+  /*
+  File control directive.
+  Allow uploads.
+  */
+
+
+  angular.module('stones').directive('stFileUploader', [
+    '$window', '$compile', '$http', '$parse', 'growl', function($window, $compile, $http, $parse, growl) {
+      return {
+        restrict: 'EA',
+        scope: true,
+        replace: true,
+        template: function(elm, attrs) {
+          var tpl;
+          tpl = '<div class="st-file-uploader"><div class="st-file-display-container hidden"><div class="st-file-remove-overlay"><i class="fa fa-times-circle"></i></div>';
+          if (elm[0].tagName === 'IMG') {
+            tpl += '<img class="img-responsive img-rounded" />';
+            attrs.$attr.stMimeType = 'st-mime-type';
+            attrs.$set('stMimeType', 'image.*');
+          }
+          tpl += '</div><div class="st-file-control-container"><span class="btn btn-primary btn-sm">Selecciona</span><br />- o -<br />Arrastra aquí el archivo</div></div>';
+          return tpl;
+        },
+        link: function(scope, _elm, attrs) {
+          var button, elm, fileDragOverHandler, fileSelectHandler, getter, input, input_tpl, isFileAPI, setter;
+          isFileAPI = $window.File && $window.FileReader && $window.FileList && $window.Blob;
+          if (!isFileAPI) {
+            throw new Error('FileAPI not supported');
+          }
+          getter = $parse(attrs.stFileUploader);
+          setter = getter.assign;
+          input_tpl = '<input type="file" name="' + attrs.name + '" class="invisible" ' + (attrs.required != null ? ' required' : '') + '>';
+          input = $compile(input_tpl)(scope);
+          elm = $window.jQuery(_elm);
+          elm.find('.st-file-control-container').append(input);
+          elm.css('position', 'relative');
+          elm.css('min-height', '130px');
+          button = elm.find('.btn').add('.st-file-uploader button');
+          if (button) {
+            button.bind('click', function(e) {
+              input.trigger('click');
+            });
+          }
+          elm.find('.st-file-remove-overlay').bind('click', function(e) {
+            setter(scope, null);
+            elm.find('.st-file-control-container').removeClass('hidden');
+            elm.find('.st-file-display-container').addClass('hidden');
+            return scope.$apply();
+          });
+          fileSelectHandler = function(e) {
+            var file, reader;
+            e.stopPropagation();
+            e.preventDefault();
+            file = e.dataTransfer != null ? e.dataTransfer.files[0] : e.target.files[0];
+            reader = new FileReader();
+            reader.onload = function(e) {
+              if (attrs.stMimeType === 'image.*') {
+                if (!file.type.match(attrs.stMimeType)) {
+                  growl.addErrorMessage("File should be an image");
+                  throw Error('stFileUploaderError: File should be an image');
+                }
+                setter(scope, e.target.result);
+                elm.find('img').attr('src', e.target.result);
+                elm.find('.st-file-display-container').removeClass('hidden');
+                elm.find('.st-file-control-container').addClass('hidden');
+              }
+              scope.$apply();
+            };
+            reader.readAsDataURL(file);
+          };
+          fileDragOverHandler = function(e) {
+            e.stopPropagation();
+            e.preventDefault();
+            e.dataTransfer.dropEffect = 'copy';
+          };
+          elm.find('input[type=file]').bind('change', function(e) {
+            return fileSelectHandler(e);
+          });
+          elm.bind('dragover', function(e) {
+            return fileDragOverHandler(e.originalEvent);
+          });
+          elm.bind('drop', function(e) {
+            return fileSelectHandler(e.originalEvent);
+          });
+          scope.$watch(attrs.stFileUploader, function(newValue, oldValue) {
+            var base64_pattern, http_request;
+            base64_pattern = /data:\w*\/.+;base64/i;
+            if ((newValue == null) || base64_pattern.test(newValue)) {
+              if (attrs.stMimeType === 'image.*') {
+                elm.find('img').removeAttr('src');
+                elm.find('.st-file-display-container').addClass('hidden');
+                elm.find('.st-file-control-container').removeClass('hidden');
+              }
+              return;
+            }
+            http_request = $http.get('/get_blob/' + newValue, {
+              cache: true
+            });
+            http_request.success(function(data) {
+              if (attrs.stMimeType === 'image.*') {
+                elm.find('img').attr('src', data);
+                elm.find('.st-file-display-container').removeClass('hidden');
+                elm.find('.st-file-control-container').addClass('hidden');
+              }
+            });
+            http_request.error(function(data) {
+              if (attrs.stMimeType === 'image.*') {
+                elm.find('img').removeAttr('src');
+                elm.find('.st-file-display-container').addClass('hidden');
+                elm.find('.st-file-control-container').removeClass('hidden');
+              }
+            });
+          });
+        }
+      };
+    }
+  ]);
+
+  /*
+  File control directive.
+  Allow chunked uploads.
+  */
+
+
+  angular.module('stones').directive('stChunkedFileUploader', [
+    '$window', '$compile', '$http', '$parse', 'growl', function($window, $compile, $http, $parse, growl) {
+      return {
+        restrict: 'EA',
+        require: 'ngModel',
+        scope: true,
+        replace: true,
+        template: '<div class="st-chunked-file-uploader clearfix"><div class="col-md-10"><div class="progress"><div class="progress-bar" role="progressbar" aria-valuenow="{{ stprogress }}" aria-valuemin="{{ stmin }}" aria-valuemax="{{ stmax }}" ng-style="stProgressStyle()" ng-class="stProgressClass()">{{ stprogress }}%</div></div></div><div class="col-md-2"><span class="btn btn-default btn-xs">Subir</span></div><input type="file" class="hidden"></div>',
+        link: function(scope, _elm, attrs, ngModel) {
+          var allowed_mime_pattern, button, chunk_size, elm, file, fileDragOverHandler, fileSelectHandler, filename, input, max_size, readChunk, reader, set_filename_func, start, stop, upload_url, _ref, _ref1;
+          elm = $window.jQuery(_elm);
+          upload_url = attrs.stChunkedFileUploader;
+          set_filename_func = $parse(attrs.stSetFilename);
+          allowed_mime_pattern = new RegExp(attrs.stAllowedMimetype, 'i');
+          max_size = attrs.stMaxSize ? parseFloat(attrs.stMaxSize) : null;
+          scope.stprogress = 0;
+          scope.stmin = (_ref = attrs.stMin) != null ? _ref : 0;
+          scope.stmax = (_ref1 = attrs.stMax) != null ? _ref1 : 100;
+          if (angular.isFunction(set_filename_func(scope))) {
+            set_filename_func = set_filename_func(scope);
+          } else {
+            set_filename_func = function() {
+              return uniqueId(32);
+            };
+          }
+          file = null;
+          filename = null;
+          reader = new FileReader();
+          chunk_size = (256 * 1024 * 4) * 2;
+          start = 0;
+          stop = start + chunk_size - 1;
+          input = elm.find('input[type=file]');
+          button = elm.find('.btn');
+          if (button) {
+            button.bind('click', function(e) {
+              input.trigger('click');
+            });
+          }
+          readChunk = function(_start, _stop) {
+            var blob;
+            if (file.webkitSlice != null) {
+              blob = file.webkitSlice(_start, _stop);
+            } else if (file.mozSlice != null) {
+              blob = file.mozSlice(_start, _stop);
+            } else {
+              blob = file.slice(_start, _stop);
+            }
+            return reader.readAsDataURL(blob);
+          };
+          reader.onloadend = function(e) {
+            var config, content, stop_, upload_request;
+            if (e.target.readyState === FileReader.DONE) {
+              stop_ = stop < file.size ? stop : file.size;
+              stop_ -= 1;
+              content = e.target.result.split(',')[1];
+              config = {
+                url: upload_url,
+                method: 'POST',
+                headers: {
+                  'Content-Range': "bytes " + start + "-" + stop_ + "/" + file.size,
+                  'Content-Type': "" + file.type
+                },
+                params: {
+                  filename: filename
+                },
+                data: content
+              };
+              if (start > 0) {
+                config.method = 'PUT';
+              }
+              upload_request = $http(config);
+              upload_request.success(function(data) {
+                scope.stprogress = Math.floor((stop_ + 1) / file.size * 100);
+                if (stop < file.size) {
+                  start = stop;
+                  stop = start + chunk_size;
+                  readChunk(start, stop);
+                } else {
+                  ngModel.$setViewValue(data.key);
+                  if (scope.save != null) {
+                    scope.save();
+                  }
+                }
+              });
+            }
+          };
+          fileSelectHandler = function(e) {
+            e.stopPropagation();
+            e.preventDefault();
+            start = 0;
+            stop = start + chunk_size - 1;
+            file = e.dataTransfer != null ? e.dataTransfer.files[0] : e.target.files[0];
+            if (!allowed_mime_pattern.test(file.type)) {
+              growl.addErrorMessage("StFileUploaderError: " + file.type + " mimetype not allowed.");
+              throw new Error("StFileUploaderError: " + file.type + " mimetype not allowed.");
+            } else if (max_size && file.size > max_size) {
+              growl.addErrorMessage("StFileUploaderError: " + file.name + " is bigger than permitted.");
+              throw new Error("StFileUploaderError: " + file.name + " is bigger than permitted.");
+            }
+            filename = set_filename_func();
+            readChunk(start, stop);
+          };
+          fileDragOverHandler = function(e) {
+            e.stopPropagation();
+            e.preventDefault();
+            e.dataTransfer.dropEffect = 'copy';
+          };
+          elm.find('input[type=file]').bind('change', function(e) {
+            return fileSelectHandler(e);
+          });
+          elm.bind('dragover', function(e) {
+            return fileDragOverHandler(e.originalEvent);
+          });
+          elm.bind('drop', function(e) {
+            return fileSelectHandler(e.originalEvent);
+          });
+          scope.stProgressStyle = function() {
+            return {
+              width: "" + scope.stprogress + "%"
+            };
+          };
+          scope.stProgressClass = function() {
+            if (scope.stprogress < 100) {
+              return 'progress-bar-warning';
+            } else {
+              return 'progress-bar-success';
+            }
+          };
+          return scope.$watch(attrs.ngModel, function(newValue, oldValue) {
+            if (((newValue != null ? newValue.length : void 0) != null) && newValue.length > 0) {
+              return scope.stprogress = 100;
+            } else {
+              return scope.stprogress = 0;
+            }
           });
         }
       };
