@@ -8,19 +8,7 @@ automate and standarize client-server communications.
 
 (function() {
   'use strict';
-  var stones, uniqueId, _STONES_CACHE;
-
-  uniqueId = function(length) {
-    var id;
-    if (length == null) {
-      length = 8;
-    }
-    id = "";
-    while (id.length < length) {
-      id += Math.random().toString(36).substr(2);
-    }
-    return id.substr(0, length);
-  };
+  var stones, _STONES_CACHE;
 
   _STONES_CACHE = null;
 
@@ -122,10 +110,25 @@ automate and standarize client-server communications.
 */
 (function() {
   'use strict';
+  var uniqueId;
+
+  uniqueId = function(length) {
+    var id;
+    if (length == null) {
+      length = 8;
+    }
+    id = "";
+    while (id.length < length) {
+      id += Math.random().toString(36).substr(2);
+    }
+    return id.substr(0, length);
+  };
+
   /*
   Pagination directive.
   It uses Bootstrap pagination CSS classes.
   */
+
 
   angular.module('stones').directive('stPagination', [
     '$compile', '$timeout', function($compile, $timeout) {
