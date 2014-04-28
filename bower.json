@@ -5,7 +5,7 @@
     "Carlos León <carlos.eduardo.leon.franco@gmail.com>"
   ],
   "description": "Stones is a library built on top of AngularJS to work in conjunction with Stones Server to synchonize communications between Client and Server",
-  "main": "dist/scripts/stones.js",
+  "main": ["dist/scripts/stones.js", "dist/styles/stones.css"],
   "keywords": [
     "stones",
     "angular"
