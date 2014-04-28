@@ -690,12 +690,16 @@ automate and standarize client-server communications.
               getLabel = function(item) {
                 if (attrs.stTypeaheadLabel != null) {
                   return item[attrs.stTypeaheadLabel];
+                } else if (item.label != null) {
+                  return item.label;
                 }
                 return item;
               };
               getValue = function(item) {
                 if (attrs.stTypeaheadValue != null) {
                   return item[attrs.stTypeaheadValue];
+                } else if (item.value != null) {
+                  return item.value;
                 }
                 return item;
               };

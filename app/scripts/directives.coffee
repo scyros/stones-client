@@ -483,11 +483,15 @@ angular.module('stones').
             getLabel = (item) ->
               if attrs.stTypeaheadLabel?
                 return item[attrs.stTypeaheadLabel]
+              else if item.label?
+                return item.label
               return item
 
             getValue = (item) ->
               if attrs.stTypeaheadValue?
                 return item[attrs.stTypeaheadValue]
+              else if item.value?
+                return item.value
               return item
 
             if angular.isArray source
