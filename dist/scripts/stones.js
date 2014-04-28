@@ -649,6 +649,330 @@ automate and standarize client-server communications.
     }
   ]);
 
+  /*
+  Google Maps geocoding directive
+  Allow to pick a location from Google Maps geocoding options fetched.
+  */
+
+
+  angular.module('stones').directive('stGeocoding', [
+    '$http', function($http) {
+      return {
+        restrict: 'EA',
+        require: ['stGeocoding', 'stTypeahead'],
+        controller: [
+          function() {
+            var _this = this;
+            this.url = null;
+            this.getGeocoding = function(searchTerm, components, region) {
+              var http_opts;
+              if (_this.url == null) {
+                throw 'stGeocodingError: URL not defined.';
+              }
+              http_opts = {
+                url: _this.url,
+                method: 'GET',
+                params: {
+                  q: searchTerm,
+                  c: components,
+                  r: region
+                }
+              };
+              return $http(http_opts);
+            };
+          }
+        ],
+        link: function(scope, elm, attrs, ctrls, transcludeFn) {
+          var stGeocodingCtrl, stTypeaheadCtrl;
+          stGeocodingCtrl = ctrls[0];
+          stTypeaheadCtrl = ctrls[1];
+          if (attrs.stGeocoding == null) {
+            throw 'stGeocodingError: URL not defined in DOM attr st-geocoding';
+          }
+          stGeocodingCtrl.url = attrs.stGeocoding;
+          stTypeaheadCtrl.ngModel.$viewChangeListeners.push(function() {
+            var ngModel, req;
+            ngModel = stTypeaheadCtrl.ngModel;
+            if (ngModel.$viewValue.length < 3) {
+              return;
+            }
+            req = stGeocodingCtrl.getGeocoding(ngModel.$viewValue, attrs.stGeocodingComponents);
+            req.success(function(data) {
+              return stTypeaheadCtrl.setSource(data);
+            });
+          });
+        }
+      };
+    }
+  ]);
+
+  /*
+  Typeahead directive
+  Allow to fetch and pick data based on typed characters.
+  */
+
+
+  angular.module('stones').directive('stTypeahead', [
+    '$parse', '$compile', function($parse, $compile) {
+      return {
+        scope: true,
+        restrict: 'EA',
+        require: ['stTypeahead', '^?ngModel'],
+        controller: [
+          '$scope', '$element', '$attrs', '$transclude', function(scope, elm, attrs, transcludeFn) {
+            var tpl,
+              _this = this;
+            this.source = [];
+            this.ngModel = null;
+            this.dropdown = null;
+            this.currentItem = null;
+            this.selected = false;
+            this.focused = false;
+            this.mousedOver = false;
+            this.allowNew = false;
+            this.index = scope.$index;
+            this.typedCounter = 0;
+            this.sortFn = function(a, b) {
+              if (a.label > b.label) {
+                return 1;
+              } else if (b.label > a.label) {
+                return -1;
+              } else {
+                return 0;
+              }
+            };
+            this.selectFn = function(value, index) {};
+            this.setSource = function(source) {
+              var getLabel, getValue, item, key, value, _i, _len;
+              getLabel = function(item) {
+                if (attrs.stTypeaheadLabel != null) {
+                  return item[attrs.stTypeaheadLabel];
+                } else if (item.label != null) {
+                  return item.label;
+                }
+                return item;
+              };
+              getValue = function(item) {
+                if (attrs.stTypeaheadValue != null) {
+                  return item[attrs.stTypeaheadValue];
+                } else if (item.value != null) {
+                  return item.value;
+                }
+                return item;
+              };
+              _this.source = [];
+              if (angular.isArray(source)) {
+                for (_i = 0, _len = source.length; _i < _len; _i++) {
+                  item = source[_i];
+                  _this.source.push({
+                    label: getLabel(item),
+                    value: getValue(item)
+                  });
+                }
+              } else if (angular.isObject(source)) {
+                for (key in source) {
+                  value = source[key];
+                  _this.source.push({
+                    label: key,
+                    value: getValue(value)
+                  });
+                }
+              }
+              _this.matchItems();
+            };
+            this.matchItems = function(value) {
+              var item, re;
+              if (_this.typedCounter === 0) {
+                return;
+              }
+              if ((value == null) || value === '') {
+                scope.stMatchedItems = _this.source;
+              } else {
+                re = new RegExp(value, 'i');
+                scope.stMatchedItems = (function() {
+                  var _i, _len, _ref, _results;
+                  _ref = this.source;
+                  _results = [];
+                  for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+                    item = _ref[_i];
+                    if (re.test(item.label)) {
+                      _results.push(item);
+                    }
+                  }
+                  return _results;
+                }).call(_this);
+                _this.currentItem = (function() {
+                  var _i, _len, _ref, _results;
+                  _ref = scope.stMatchedItems;
+                  _results = [];
+                  for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+                    item = _ref[_i];
+                    if (item.label === value) {
+                      _results.push(item);
+                    }
+                  }
+                  return _results;
+                })();
+              }
+              scope.stMatchedItems.sort(_this.sortFn);
+              _this.show();
+            };
+            this.selectItem = function(item_) {
+              var item;
+              item = item_ != null ? item_ : _this.currentItem;
+              if (item != null) {
+                _this.currentItem = item;
+                _this.ngModel.$setViewValue(item.label);
+                elm.val(item.label);
+                _this.selectFn(item.value, _this.index);
+              } else {
+                if (!_this.allowNew) {
+                  _this.currentItem = null;
+                  _this.ngModel.$setViewValue('');
+                  elm.val('');
+                  _this.selectFn('', _this.index);
+                }
+              }
+              _this.hide();
+              _this.typedCounter = 0;
+            };
+            this.setItemClass = function(item) {
+              if (item === _this.currentItem) {
+                return 'active';
+              }
+            };
+            this.prev = function() {
+              var index;
+              index = scope.stMatchedItems.indexOf(_this.currentItem);
+              if (index === (scope.stMatchedItems.length - 1)) {
+                index -= 1;
+              }
+              _this.currentItem = scope.stMatchedItems[index + 1];
+            };
+            this.next = function() {
+              var index;
+              index = scope.stMatchedItems.indexOf(_this.currentItem);
+              if (index === 0) {
+                index += 1;
+              }
+              _this.currentItem = scope.stMatchedItems[index - 1];
+            };
+            this.hide = function() {
+              _this.dropdown.hide();
+            };
+            this.show = function() {
+              var offset;
+              if (scope.stMatchedItems.length) {
+                offset = elm.offset();
+                offset.top += elm[0].offsetHeight + 2;
+                _this.dropdown.css('top', offset.top);
+                _this.dropdown.css('left', offset.left);
+                _this.dropdown.show();
+              } else {
+                _this.hide();
+              }
+            };
+            this.keydownFn = function(e) {
+              switch (e.keyCode) {
+                case 9:
+                  _this.selectItem();
+                  break;
+                case 13:
+                  e.preventDefault();
+                  _this.selectItem();
+                  break;
+                case 38:
+                  _this.next();
+                  break;
+                case 40:
+                  _this.prev();
+                  break;
+                case 27:
+                  _this.hide();
+                  break;
+                default:
+                  _this.typedCounter++;
+              }
+              scope.$apply();
+            };
+            this.focusFn = function(e) {
+              var empty;
+              empty = e.currentTarget.value === '';
+              if (empty) {
+                _this.typedCounter++;
+              }
+              _this.focused = true;
+              _this.matchItems(e.currentTarget.value);
+              scope.$apply();
+            };
+            this.blurFn = function(e) {
+              _this.focused = false;
+              if (!_this.mousedOver) {
+                _this.hide();
+              }
+              scope.$apply();
+            };
+            this.mouseenterFn = function(e) {
+              _this.mousedOver = true;
+              _this.dropdown.find('li').removeClass('active');
+              scope.$apply();
+            };
+            this.mouseleaveFn = function(e) {
+              var index;
+              _this.mousedOver = false;
+              index = scope.stMatchedItems.indexOf(_this.currentItem);
+              if (index !== -1) {
+                _this.dropdown.find('li').eq(index).addClass('active');
+              }
+              scope.$apply();
+            };
+            scope.stSelectItem = this.selectItem;
+            scope.stSetItemClass = this.setItemClass;
+            if ($parse(attrs.stTypeaheadSelectFn)(scope) != null) {
+              this.selectFn = $parse(attrs.stTypeaheadSelectFn)(scope);
+            }
+            if ($parse(attrs.stTypeadeadSortFn)(scope) != null) {
+              this.sortFn = $parse(attrs.stTypeaheadSortFn)(scope);
+            }
+            scope.$watch(attrs.stTypeahead, function(value, old) {
+              if ((value != null) && value !== old) {
+                this.setSource(value);
+              }
+            });
+            tpl = '\
+<ul class="typeahead dropdown-menu">\
+  <li ng-repeat="stItem in stMatchedItems" ng-click="stSelectItem(stItem)" ng-class="stSetItemClass(stItem)">\
+    <a href="">{{ stItem.label }}</a>\
+  </li>\
+</ul>';
+            this.dropdown = $compile(tpl)(scope);
+            angular.element('body').append(this.dropdown);
+            this.dropdown.bind('mouseenter', this.mouseenterFn);
+            this.dropdown.bind('mouseleave', this.mouseleaveFn);
+            scope.$on('$destroy', function(e) {
+              _this.dropdown.remove();
+            });
+            elm.bind('keydown', this.keydownFn);
+            elm.bind('focus', this.focusFn);
+            elm.bind('blur', this.blurFn);
+          }
+        ],
+        link: function(scope, elm, attrs, ctrls, transcludeFn) {
+          var ngModel, stTypeaheadCtrl;
+          stTypeaheadCtrl = ctrls[0];
+          ngModel = ctrls[1];
+          if ((ngModel == null) || (stTypeaheadCtrl == null)) {
+            return;
+          }
+          stTypeaheadCtrl.ngModel = ngModel;
+          ngModel.$viewChangeListeners.push(function() {
+            stTypeaheadCtrl.matchItems(ngModel.$viewValue);
+          });
+        }
+      };
+    }
+  ]);
+
 }).call(this);
 
 /*

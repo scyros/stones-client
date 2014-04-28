@@ -440,3 +440,297 @@ angular.module('stones').
           else
             scope.stprogress = 0
   ]
+
+###
+Google Maps geocoding directive
+Allow to pick a location from Google Maps geocoding options fetched.
+###
+angular.module('stones').
+  directive 'stGeocoding', [
+    '$http'
+    ($http) ->
+      restrict: 'EA'
+      require: ['stGeocoding', 'stTypeahead']
+      controller: [
+        () ->
+          @url = null
+          @getGeocoding = (searchTerm, components, region) =>
+            if not @url?
+              throw 'stGeocodingError: URL not defined.'
+
+            http_opts =
+              url: @url
+              method: 'GET'
+              params:
+                q: searchTerm
+                c: components
+                r: region
+
+            return $http http_opts
+
+          return
+      ]
+      link: (scope, elm, attrs, ctrls, transcludeFn) ->
+        stGeocodingCtrl = ctrls[0]
+        stTypeaheadCtrl = ctrls[1]
+
+        if not attrs.stGeocoding?
+          throw 'stGeocodingError: URL not defined in DOM attr st-geocoding'
+
+        stGeocodingCtrl.url = attrs.stGeocoding
+
+        # listen for changes
+        stTypeaheadCtrl.ngModel.$viewChangeListeners.push () ->
+          ngModel = stTypeaheadCtrl.ngModel
+          if ngModel.$viewValue.length < 3 then return
+
+          req = stGeocodingCtrl.getGeocoding ngModel.$viewValue, attrs.stGeocodingComponents
+          req.success (data) ->
+            stTypeaheadCtrl.setSource data
+          return
+
+        return
+  ]
+
+
+###
+Typeahead directive
+Allow to fetch and pick data based on typed characters.
+###
+angular.module('stones').
+  directive 'stTypeahead', [
+    '$parse',
+    '$compile',
+    ($parse, $compile) ->
+      scope: true
+      restrict: 'EA'
+      require: ['stTypeahead', '^?ngModel']
+      controller: [
+        '$scope',
+        '$element',
+        '$attrs',
+        '$transclude',
+        (scope, elm, attrs, transcludeFn) ->
+          @source = []
+          @ngModel = null
+          @dropdown = null
+          @currentItem = null
+          @selected = false
+          @focused = false
+          @mousedOver = false
+          @allowNew = false
+          @index = scope.$index
+          @typedCounter = 0
+          @sortFn = (a, b) =>
+            if a.label > b.label
+              return 1
+            else if b.label > a.label
+              return -1
+            else
+              return 0
+          @selectFn = (value, index) => return
+
+          # Set source to perform searches
+          @setSource = (source) =>
+            getLabel = (item) ->
+              if attrs.stTypeaheadLabel?
+                return item[attrs.stTypeaheadLabel]
+              else if item.label?
+                return item.label
+              return item
+
+            getValue = (item) ->
+              if attrs.stTypeaheadValue?
+                return item[attrs.stTypeaheadValue]
+              else if item.value?
+                return item.value
+              return item
+
+            @source = []
+
+            if angular.isArray source
+              for item in source
+                @source.push
+                  label: getLabel item
+                  value: getValue item
+            else if angular.isObject source
+              for key, value of source
+                @source.push
+                  label: key
+                  value: getValue value
+
+            @matchItems()
+            return
+
+          # Find items according to typed characters
+          @matchItems = (value) =>
+            # Don't match anything if there aren't typed characters
+            if @typedCounter is 0 then return
+
+            if not value? or value is ''
+              scope.stMatchedItems = @source
+            else
+              re = new RegExp value, 'i'
+              scope.stMatchedItems = (item for item in @source when re.test item.label)
+              @currentItem = (item for item in scope.stMatchedItems when item.label is value)
+
+            scope.stMatchedItems.sort @sortFn
+            @show()
+            return
+
+          # Propagate selection made
+          @selectItem = (item_) =>
+            item = if item_? then item_ else @currentItem
+
+            if item?
+              @currentItem = item
+              @ngModel.$setViewValue item.label
+              elm.val item.label
+              @selectFn item.value, @index
+            else
+              if not @allowNew
+                @currentItem = null
+                @ngModel.$setViewValue ''
+                elm.val ''
+                @selectFn '', @index
+
+            @hide()
+            @typedCounter = 0
+            return
+
+          # Add or removes 'active' class to/from dropdown items
+          @setItemClass = (item) =>
+            if item is @currentItem
+              return 'active'
+            return
+
+          # Go one item up
+          @prev = () =>
+            index = scope.stMatchedItems.indexOf @currentItem
+            if index is (scope.stMatchedItems.length - 1) then index -= 1
+            @currentItem = scope.stMatchedItems[index + 1]
+            return
+
+          # Go one item down
+          @next = () =>
+            index = scope.stMatchedItems.indexOf @currentItem
+            if index is 0 then index += 1
+            @currentItem = scope.stMatchedItems[index - 1]
+            return
+
+          # Hide dropdown
+          @hide = () =>
+            @dropdown.hide()
+            return
+
+          # Show dropdown
+          @show = () =>
+            if scope.stMatchedItems.length
+              offset = elm.offset()
+              offset.top += elm[0].offsetHeight + 2
+              @dropdown.css 'top', offset.top
+              @dropdown.css 'left', offset.left
+              @dropdown.show()
+            else
+              @hide()
+            return
+
+          # Binding to keydown event
+          @keydownFn = (e) =>
+            switch e.keyCode
+              when 9 then @selectItem()
+              when 13
+                e.preventDefault()
+                @selectItem()
+              when 38 then @next()
+              when 40 then @prev()
+              when 27 then @hide()
+              else @typedCounter++
+            scope.$apply()
+            return
+
+          # Binding to focus event
+          @focusFn = (e) =>
+            empty = e.currentTarget.value is ''
+            if empty then @typedCounter++
+            @focused = true
+            @matchItems e.currentTarget.value
+            scope.$apply()
+            return
+
+          # Binding to blur event
+          @blurFn = (e) =>
+            @focused = false
+            if not @mousedOver then @hide()
+            scope.$apply()
+            return
+
+          # Binding to mouseenter event
+          @mouseenterFn = (e) =>
+            @mousedOver = true
+            @dropdown.find('li').removeClass 'active'
+            scope.$apply()
+            return
+
+          # Binding to mouseleave event
+          @mouseleaveFn = (e) =>
+            @mousedOver = false
+            index = scope.stMatchedItems.indexOf @currentItem
+            if index isnt -1
+              @dropdown.find('li').eq(index).addClass 'active'
+            scope.$apply()
+            return
+
+          # Scope bindings
+          scope.stSelectItem = @selectItem
+          scope.stSetItemClass = @setItemClass
+
+          if $parse(attrs.stTypeaheadSelectFn)(scope)?
+            @selectFn = $parse(attrs.stTypeaheadSelectFn)(scope)
+          if $parse(attrs.stTypeadeadSortFn)(scope)?
+            @sortFn = $parse(attrs.stTypeaheadSortFn)(scope)
+
+          # Change source
+          scope.$watch attrs.stTypeahead, (value, old) ->
+            if value? and value isnt old
+              @setSource value
+            return
+
+          # Add dropdown to DOM
+          tpl = '
+<ul class="typeahead dropdown-menu">
+  <li ng-repeat="stItem in stMatchedItems" ng-click="stSelectItem(stItem)" ng-class="stSetItemClass(stItem)">
+    <a href="">{{ stItem.label }}</a>
+  </li>
+</ul>'
+          @dropdown = $compile(tpl)(scope)
+          angular.element('body').append @dropdown
+          @dropdown.bind 'mouseenter', @mouseenterFn
+          @dropdown.bind 'mouseleave', @mouseleaveFn
+
+          # Clear dropdown from DOM
+          scope.$on '$destroy', (e) =>
+            @dropdown.remove()
+            return
+
+          # Element events
+          elm.bind 'keydown', @keydownFn
+          elm.bind 'focus', @focusFn
+          elm.bind 'blur', @blurFn
+
+          return
+        ]
+      link: (scope, elm, attrs, ctrls, transcludeFn) ->
+        stTypeaheadCtrl = ctrls[0]
+        ngModel = ctrls[1]
+        if not ngModel? or not stTypeaheadCtrl? then return
+
+        stTypeaheadCtrl.ngModel = ngModel
+
+        # Update view if model changes
+        ngModel.$viewChangeListeners.push () ->
+          stTypeaheadCtrl.matchItems ngModel.$viewValue
+          return
+
+        return
+  ]
