@@ -740,3 +740,24 @@ angular.module('stones').
 
         return
   ]
+
+###
+Google Maps directive
+Load a map inside element with custom properties.
+###
+angular.module('stones')
+  .directive 'stGoogleMaps', [
+    '$window',
+    '$parse',
+    ($window, $parse) ->
+      restrict: 'EA'
+      link: (scope, elm, attrs, ctrls, transcludeFn) ->
+        google = $window.google
+        if not google?
+          throw 'stGoogleMapsError: Google Maps not loaded.'
+        mapOpts = $parse(attrs.stGoogleMaps)(scope)
+        if not mapOpts?
+          throw 'stGoogleMapsError: no map options found.'
+
+        scope.stMap = new google.maps.Map elm[0], mapOpts
+  ]

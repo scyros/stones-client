@@ -976,6 +976,32 @@ automate and standarize client-server communications.
     }
   ]);
 
+  /*
+  Google Maps directive
+  Load a map inside element with custom properties.
+  */
+
+
+  angular.module('stones').directive('stGoogleMaps', [
+    '$window', '$parse', function($window, $parse) {
+      return {
+        restrict: 'EA',
+        link: function(scope, elm, attrs, ctrls, transcludeFn) {
+          var google, mapOpts;
+          google = $window.google;
+          if (google == null) {
+            throw 'stGoogleMapsError: Google Maps not loaded.';
+          }
+          mapOpts = $parse(attrs.stGoogleMaps)(scope);
+          if (mapOpts == null) {
+            throw 'stGoogleMapsError: no map options found.';
+          }
+          return scope.stMap = new google.maps.Map(elm[0], mapOpts);
+        }
+      };
+    }
+  ]);
+
 }).call(this);
 
 /*
