@@ -482,6 +482,7 @@ angular.module('stones').
         return
   ]
 
+
 ###
 Google Maps directive
 Load a map inside element with custom properties.
@@ -501,4 +502,261 @@ angular.module('stones')
           throw 'stGoogleMapsError: no map options found.'
 
         scope.stMap = new google.maps.Map elm[0], mapOpts
+  ]
+
+
+###
+File control directive.
+Allow chunked uploads.
+###
+angular.module('stones').
+  directive 'stChunkedFileUploader', [
+    '$window',
+    '$compile',
+    '$http',
+    '$parse',
+    'growl',
+    ($window, $compile, $http, $parse, growl) ->
+      restrict: 'EA'
+      require: 'ngModel'
+      scope: true
+      replace: true
+      template: '<div class="st-chunked-file-uploader clearfix"><div class="col-md-10"><div class="progress"><div class="progress-bar" role="progressbar" aria-valuenow="{{ stprogress }}" aria-valuemin="{{ stmin }}" aria-valuemax="{{ stmax }}" ng-style="stProgressStyle()" ng-class="stProgressClass()">{{ stprogress }}%</div></div></div><div class="col-md-2"><span class="btn btn-default btn-xs">Subir</span></div><input type="file" class="hidden"></div>'
+      link: (scope, _elm, attrs, ngModel) ->
+        elm = $window.jQuery(_elm)
+        upload_url = attrs.stChunkedFileUploader
+        set_filename_func = $parse(attrs.stSetFilename)(scope)
+        allowed_mime_pattern = new RegExp attrs.stAllowedMimetype, 'i'
+        max_size = if attrs.stMaxSize then parseFloat(attrs.stMaxSize) else null
+        scope.stprogress = 0
+        scope.stmin = attrs.stMin ? 0
+        scope.stmax = attrs.stMax ? 100
+
+        if not angular.isFunction(set_filename_func)
+          set_filename_func = () ->
+            uniqueId 32
+
+        file = null
+        filename = null
+        reader = new FileReader()
+        chunk_size = (256 * 1024 * 4) * 1  # 1Mb
+        start = 0
+        stop = start + chunk_size - 1
+
+        input = elm.find('input[type=file]')
+        button = elm.find('.btn')
+        if button
+          button.bind 'click', (e) ->
+            input.trigger 'click'
+            return
+
+        readChunk = (_start, _stop) ->
+          if file.webkitSlice?
+            blob = file.webkitSlice _start, _stop
+          else if file.mozSlice?
+            blob = file.mozSlice _start, _stop
+          else
+            blob = file.slice _start, _stop + 1
+
+          reader.readAsDataURL blob
+
+        reader.onloadend = (e) ->
+          if e.target.readyState is FileReader.DONE
+            stop_ = if stop < file.size then stop else file.size - 1
+            content = e.target.result.split(',')[1]
+            config =
+              url: upload_url
+              method: 'POST'
+              headers:
+                'Content-Range': "bytes #{start}-#{stop_}/#{file.size}"
+                'Content-Type': "#{file.type}"
+              params:
+                filename: filename
+              data: content
+
+            if start > 0 then config.method = 'PUT'
+
+            upload_request = $http config
+            upload_request.success (data) ->
+              scope.stprogress = Math.floor((stop_ + 1) / file.size * 100)
+              if stop < file.size
+                start = stop + 1
+                stop = start + chunk_size - 1
+                readChunk start, stop
+              else
+                ngModel.$setViewValue data.key
+                if scope.save? then scope.save()
+              return
+          return
+
+        fileSelectHandler = (e) ->
+          e.stopPropagation()
+          e.preventDefault()
+
+          start = 0
+          stop = start + chunk_size - 1
+
+          file = if e.dataTransfer? then e.dataTransfer.files[0] else e.target.files[0]
+          if not allowed_mime_pattern.test file.type
+            growl.addErrorMessage "StFileUploaderError: #{file.type} mimetype not allowed."
+            throw new Error "StFileUploaderError: #{file.type} mimetype not allowed."
+          else if max_size and file.size > max_size
+            growl.addErrorMessage "StFileUploaderError: #{file.name} is bigger than permitted."
+            throw new Error "StFileUploaderError: #{file.name} is bigger than permitted."
+
+          filename = set_filename_func()
+          readChunk start, stop
+          return
+
+        fileDragOverHandler = (e) ->
+          e.stopPropagation()
+          e.preventDefault()
+          e.dataTransfer.dropEffect = 'copy'
+          return
+
+        elm.find('input[type=file]').bind 'change', (e) ->
+          fileSelectHandler(e)
+        elm.bind 'dragover', (e) ->
+          fileDragOverHandler(e.originalEvent)
+        elm.bind 'drop', (e) ->
+          fileSelectHandler(e.originalEvent)
+
+        scope.stProgressStyle = () ->
+          width: "#{scope.stprogress}%"
+
+        scope.stProgressClass = () ->
+          if scope.stprogress < 100
+            return 'progress-bar-warning'
+          else
+            return 'progress-bar-success'
+
+        scope.$watch attrs.ngModel, (newValue, oldValue) ->
+          if newValue?.length? and newValue.length > 0
+            scope.stprogress = 100
+          else
+            scope.stprogress = 0
+  ]
+
+
+###
+File control directive.
+Allow uploads.
+###
+angular.module('stones').
+  directive 'stFileUploader', [
+    '$window',
+    '$compile',
+    '$http',
+    '$parse',
+    'growl',
+    ($window, $compile, $http, $parse, growl) ->
+      restrict: 'EA',
+      require: 'stFileUploader'
+      controller: [
+        '$scope',
+        '$element',
+        '$attrs',
+        '$transclude',
+        (scope, elm, attrs, transcludeFn) ->
+          @elm = $window.jQuery elm
+          @getter = $parse(attrs.stFileUploader)
+          @setter = @getter.assign
+          input_tpl = '<input type="file" name="' + attrs.name + '" class="invisible" ' + (if attrs.required? then ' required' else '') + '>'
+          input = $compile(input_tpl)(scope)
+
+          dragOverHandler = (e) ->
+            e.stopPropagation()
+            e.preventDefault()
+            e.dataTransfer.dropEffect = 'copy'
+            return
+
+          onFileLoad = (file) =>
+            return (e) =>
+              if attrs.stMimeType is 'image.*'
+                if not file.type.match(attrs.stMimeType)
+                  growl.addErrorMessage "File should be an image"
+                  throw Error 'stFileUploaderError: File should be an image'
+                @setter scope, e.target.result
+                @elm.find('img').attr 'src', e.target.result
+                @elm.find('.st-file-display-container').removeClass 'hidden'
+                @elm.find('.st-file-control-container').addClass 'hidden'
+              return
+
+          selectFileHandler = (e) =>
+            e.stopPropagation()
+            e.preventDefault()
+            file = if e.dataTransfer? then e.dataTransfer.files[0] else e.target.files[0]
+            reader = new FileReader()
+
+            reader.onload = onFileLoad file
+
+            reader.readAsDataURL file
+            return
+
+          @change = (value, old) =>
+            base64_pattern = /data:\w*\/.+;base64/i
+            if not value? or base64_pattern.test(value)
+              @elm.find('img').removeAttr 'src'
+              @elm.find('.st-file-display-container').addClass 'hidden'
+              @elm.find('.st-file-control-container').removeClass 'hidden'
+              return
+
+            @elm.find('img').attr 'src', value
+            @elm.find('.st-file-display-container').removeClass 'hidden'
+            @elm.find('.st-file-control-container').addClass 'hidden'
+            return
+
+          buttonClick = (e) =>
+            @input.trigger 'click'
+            return
+
+          removeClick = (e) =>
+            @setter scope, null
+            return
+
+          @init = () =>
+            @elm.find('.st-file-control-container').append input
+            @elm.css 'position', 'relative'
+            @elm.css 'min-height', '130px'
+
+            @elm.find('input[type=file]').bind 'change', (e) ->
+              selectFileHandler e
+            @elm.bind 'dragover', (e) ->
+              dragOverHandler e.originalEvent
+            @elm.bind 'drop', (e) ->
+              selectFileHandler e.originalEvent
+
+            button = elm.find('.btn').add('.st-file-uploader button')
+            if button? then button.bind 'click', buttonClick
+
+            @elm.find('.st-file-remove-overlay').bind('click', removeClick)
+              .bind 'click', (e) ->
+                elm.find('.st-file-control-container').removeClass 'hidden'
+                elm.find('.st-file-display-container').addClass 'hidden'
+                return
+
+            return
+
+          return
+      ]
+      scope: true
+      replace: true
+      template: (elm, attrs) ->
+        tpl = '<div class="st-file-uploader"><div class="st-file-display-container hidden"><div class="st-file-remove-overlay"><i class="fa fa-times-circle"></i></div>';
+        if elm[0].tagName is 'IMG'
+          tpl += '<img class="img-responsive img-rounded" />'
+          attrs.$attr.stMimeType = 'st-mime-type'
+          attrs.$set 'stMimeType', 'image.*'
+        tpl += '</div><div class="st-file-control-container"><span class="btn btn-primary btn-sm">Selecciona</span><br />- o -<br />Arrastra aquí el archivo</div></div>'
+      link: (scope, _elm, attrs, stFileUploaderCtrl, transcludeFn) ->
+        isFileAPI = $window.File && $window.FileReader && $window.FileList && $window.Blob
+        if not isFileAPI
+          throw new Error 'FileAPI not supported'
+
+        scope.$watch attrs.stFileUploader, (value, old) ->
+          stFileUploaderCtrl.change value, old
+          return
+
+        stFileUploaderCtrl.init()
+        return
   ]
