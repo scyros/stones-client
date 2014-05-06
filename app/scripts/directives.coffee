@@ -6,6 +6,7 @@ uniqueId = (length=8) ->
   id += Math.random().toString(36).substr(2) while id.length < length
   id.substr 0, length
 
+
 ###
 Pagination directive.
 It uses Bootstrap pagination CSS classes.
@@ -76,6 +77,7 @@ angular.module('stones')
             scope.current_page = step
     ]
 
+
 ###
 Tooltip directive.
 It uses Bootstrap tooltip.
@@ -94,21 +96,6 @@ angular.module('stones')
           placement: 'auto bottom'
   ]
 
-###
-100% height directive.
-Sets box height to the maximum possible within body bounds.
-###
-angular.module('stones')
-  .directive 'stHeight100', [
-    () ->
-      restrict: 'A'
-      link: (scope, _elm, attrs) ->
-        elm = $(_elm)
-        body_height = $('body').height()
-        top = elm.offset().top
-        height = body_height - top
-        elm.height(height)
-  ]
 
 ###
 No navigation directive.
@@ -130,6 +117,7 @@ angular.module('stones')
           elm.find('a').bind 'click', (e) ->
             e.preventDefault()
   ]
+
 
 ###
 Spy directives.
@@ -199,118 +187,6 @@ angular.module('stones')
           highlightSpy?.in()
   ]
 
-###
-File control directive.
-Allow uploads.
-###
-angular.module('stones').
-  directive 'stFileUploader', [
-    '$window',
-    '$compile',
-    '$http',
-    '$parse',
-    'growl',
-    ($window, $compile, $http, $parse, growl) ->
-      restrict: 'EA',
-      scope: true,
-      replace: true,
-      template: (elm, attrs) ->
-        tpl = '<div class="st-file-uploader"><div class="st-file-display-container hidden"><div class="st-file-remove-overlay"><i class="fa fa-times-circle"></i></div>';
-        if elm[0].tagName is 'IMG'
-          tpl += '<img class="img-responsive img-rounded" />'
-          attrs.$attr.stMimeType = 'st-mime-type'
-          attrs.$set 'stMimeType', 'image.*'
-        tpl += '</div><div class="st-file-control-container"><span class="btn btn-primary btn-sm">Selecciona</span><br />- o -<br />Arrastra aquí el archivo</div></div>'
-        return tpl;
-      link: (scope, _elm, attrs) ->
-        isFileAPI = $window.File && $window.FileReader && $window.FileList && $window.Blob
-        if not isFileAPI
-          throw new Error 'FileAPI not supported'
-
-        getter = $parse(attrs.stFileUploader)
-        setter = getter.assign
-        input_tpl = '<input type="file" name="' + attrs.name + '" class="invisible" ' + (if attrs.required? then ' required' else '') + '>'
-        input = $compile(input_tpl)(scope)
-        elm = $window.jQuery(_elm)
-        elm.find('.st-file-control-container').append input
-        elm.css 'position', 'relative'
-        elm.css 'min-height', '130px'
-
-        button = elm.find('.btn')
-          .add('.st-file-uploader button')
-        if button
-          button.bind 'click', (e) ->
-            input.trigger 'click'
-            return
-
-        elm.find('.st-file-remove-overlay').bind 'click', (e) ->
-          setter scope, null
-          elm.find('.st-file-control-container').removeClass 'hidden'
-          elm.find('.st-file-display-container').addClass 'hidden'
-          scope.$apply()
-
-        fileSelectHandler = (e) ->
-          e.stopPropagation()
-          e.preventDefault()
-
-          file = if e.dataTransfer? then e.dataTransfer.files[0] else e.target.files[0]
-          reader = new FileReader()
-
-          reader.onload = (e) ->
-            if attrs.stMimeType is 'image.*'
-              if not file.type.match(attrs.stMimeType)
-                growl.addErrorMessage "File should be an image"
-                throw Error 'stFileUploaderError: File should be an image'
-              setter(scope, e.target.result)
-              elm.find('img').attr 'src', e.target.result
-              elm.find('.st-file-display-container').removeClass 'hidden'
-              elm.find('.st-file-control-container').addClass 'hidden'
-            scope.$apply()
-            return
-
-          reader.readAsDataURL(file)
-          return
-
-        fileDragOverHandler = (e) ->
-          e.stopPropagation()
-          e.preventDefault()
-          e.dataTransfer.dropEffect = 'copy'
-          return
-
-        elm.find('input[type=file]').bind 'change', (e) ->
-          fileSelectHandler(e)
-        elm.bind 'dragover', (e) ->
-          fileDragOverHandler(e.originalEvent)
-        elm.bind 'drop', (e) ->
-          fileSelectHandler(e.originalEvent)
-
-        scope.$watch attrs.stFileUploader, (newValue, oldValue) ->
-          base64_pattern = /data:\w*\/.+;base64/i
-          if not newValue? or base64_pattern.test(newValue)
-            if attrs.stMimeType is 'image.*'
-              elm.find('img').removeAttr 'src'
-              elm.find('.st-file-display-container').addClass 'hidden'
-              elm.find('.st-file-control-container').removeClass 'hidden'
-            return
-
-          http_request = $http.get '/get_blob/' + newValue, cache: true
-          http_request.success (data) ->
-            if attrs.stMimeType is 'image.*'
-              elm.find('img').attr 'src', data
-              elm.find('.st-file-display-container').removeClass 'hidden'
-              elm.find('.st-file-control-container').addClass 'hidden'
-            return
-          http_request.error (data) ->
-            if attrs.stMimeType is 'image.*'
-              elm.find('img').removeAttr 'src'
-              elm.find('.st-file-display-container').addClass 'hidden'
-              elm.find('.st-file-control-container').removeClass 'hidden'
-            return
-
-          return
-
-        return
-  ]
 
 ###
 Google Maps geocoding directive
