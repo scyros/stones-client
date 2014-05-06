@@ -910,7 +910,7 @@ automate and standarize client-server communications.
             this.change = function(value, old) {
               var base64_pattern;
               base64_pattern = /data:\w*\/.+;base64/i;
-              if ((value == null) || base64_pattern.test(value)) {
+              if ((value == null) || value === '' || base64_pattern.test(value)) {
                 _this.elm.find('img').removeAttr('src');
                 _this.elm.find('.st-file-display-container').addClass('hidden');
                 _this.elm.find('.st-file-control-container').removeClass('hidden');
@@ -921,7 +921,7 @@ automate and standarize client-server communications.
               _this.elm.find('.st-file-control-container').addClass('hidden');
             };
             buttonClick = function(e) {
-              _this.input.trigger('click');
+              input.trigger('click');
             };
             removeClick = function(e) {
               _this.setter(scope, null);

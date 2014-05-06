@@ -695,7 +695,7 @@ angular.module('stones').
 
           @change = (value, old) =>
             base64_pattern = /data:\w*\/.+;base64/i
-            if not value? or base64_pattern.test(value)
+            if not value? or value is '' or base64_pattern.test(value)
               @elm.find('img').removeAttr 'src'
               @elm.find('.st-file-display-container').addClass 'hidden'
               @elm.find('.st-file-control-container').removeClass 'hidden'
@@ -707,7 +707,7 @@ angular.module('stones').
             return
 
           buttonClick = (e) =>
-            @input.trigger 'click'
+            input.trigger 'click'
             return
 
           removeClick = (e) =>
