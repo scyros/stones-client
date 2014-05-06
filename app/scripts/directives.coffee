@@ -584,7 +584,7 @@ angular.module('stones').
                 stop = start + chunk_size - 1
                 readChunk start, stop
               else
-                ngModel.$setViewValue data.key
+                ngModel.$setViewValue data.url
                 if scope.save? then scope.save()
               return
           return
@@ -593,6 +593,7 @@ angular.module('stones').
           e.stopPropagation()
           e.preventDefault()
 
+          scope.stprogress = 0
           start = 0
           stop = start + chunk_size - 1
 

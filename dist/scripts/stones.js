@@ -797,7 +797,7 @@ automate and standarize client-server communications.
                   stop = start + chunk_size - 1;
                   readChunk(start, stop);
                 } else {
-                  ngModel.$setViewValue(data.key);
+                  ngModel.$setViewValue(data.url);
                   if (scope.save != null) {
                     scope.save();
                   }
@@ -808,6 +808,7 @@ automate and standarize client-server communications.
           fileSelectHandler = function(e) {
             e.stopPropagation();
             e.preventDefault();
+            scope.stprogress = 0;
             start = 0;
             stop = start + chunk_size - 1;
             file = e.dataTransfer != null ? e.dataTransfer.files[0] : e.target.files[0];
