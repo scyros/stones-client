@@ -1042,6 +1042,38 @@ automate and standarize client-server communications.
     }
   ]);
 
+  /*
+  Datepicker directive.
+  Allows to pick a date from a component.
+  */
+
+
+  angular.module('stones').directive('stDatepicker', [
+    '$parse', function($parse) {
+      return {
+        require: 'ngModel',
+        restrict: 'EA',
+        link: function(scope, elm, attrs, ngModel, transcludeFn) {
+          var datepicker, input_group, options;
+          elm.wrap('<div class="input-group"></div>');
+          input_group = elm.parent();
+          input_group.prepend('<span class="input-group-addon"><i class="fa fa-calendar"></i></span>');
+          options = $parse(attrs.stDatepicker)(scope);
+          angular.extend(options, {
+            autoclose: true
+          });
+          datepicker = elm.datepicker(options);
+          ngModel.$parsers.push(function(value) {
+            return moment(value, 'DD/MM/YYYY').utc();
+          });
+          ngModel.$formatters.push(function(value) {
+            return moment(value).utc().format('DD/MM/YYYY');
+          });
+        }
+      };
+    }
+  ]);
+
 }).call(this);
 
 /*

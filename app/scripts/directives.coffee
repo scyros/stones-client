@@ -793,3 +793,33 @@ angular.module('stones').
         stFileUploaderCtrl.init()
         return
   ]
+
+
+###
+Datepicker directive.
+Allows to pick a date from a component.
+###
+angular.module('stones')
+  .directive 'stDatepicker', [
+    '$parse',
+    ($parse) ->
+      require: 'ngModel'
+      restrict: 'EA',
+      link: (scope, elm, attrs, ngModel, transcludeFn) ->
+        elm.wrap '<div class="input-group"></div>'
+        input_group = elm.parent()
+        input_group.prepend '<span class="input-group-addon"><i class="fa fa-calendar"></i></span>'
+
+        options = $parse(attrs.stDatepicker) scope
+        angular.extend options,
+          autoclose: true
+
+        datepicker = elm.datepicker options
+
+        ngModel.$parsers.push (value) ->
+          moment(value, 'DD/MM/YYYY').utc()
+        ngModel.$formatters.push (value) ->
+          moment(value).utc().format 'DD/MM/YYYY'
+
+        return
+  ]
