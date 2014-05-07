@@ -526,7 +526,7 @@ angular.module('stones').
   <div class="col-md-10">
     <div class="progress">
       <div class="progress-bar" role="progressbar" aria-valuenow="{{ stprogress }}" aria-valuemin="{{ stmin }}" aria-valuemax="{{ stmax }}" ng-style="stProgressStyle()" ng-class="stProgressClass()">{{ stprogress }}%</div>
-      <div class="progress-bar" role="progressbar" aria-valuenow="{{ 100 - stprogress }}" aria-valuemin="{{ stmin }}" aria-valuemax="{{ stmax }}" ng-style="stInverseProgressStyle()" ng-class="stInverseProgressClass()"></div>
+      <div class="progress-bar" role="progressbar" aria-valuenow="{{ 100 - stprogress }}" aria-valuemin="{{ stmin }}" aria-valuemax="{{ stmax }}" ng-style="stInverseProgressStyle()" ng-class="stInverseProgressClass()">{{ stInverseProgressDisplay() }}</div>
     </div>
   </div>
   <div class="col-md-2">
@@ -650,6 +650,11 @@ angular.module('stones').
           ret = 'progress-bar-info progress-striped'
           if active then ret += ' active'
           ret
+
+        scope.stInverseProgressDisplay = () ->
+          if scope.stprogress is 0
+            return '0%'
+          ''
 
         scope.$watch attrs.ngModel, (newValue, oldValue) ->
           if newValue?.length? and newValue.length > 0
