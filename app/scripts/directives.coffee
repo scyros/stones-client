@@ -524,7 +524,7 @@ angular.module('stones').
       template: '
 <div class="st-chunked-file-uploader clearfix">
   <div class="col-md-10">
-    <div class="progress">
+    <div class="progress" ng-class="stProgressContainerClass()">
       <div class="progress-bar" role="progressbar" aria-valuenow="{{ stprogress }}" aria-valuemin="{{ stmin }}" aria-valuemax="{{ stmax }}" ng-style="stProgressStyle()" ng-class="stProgressClass()">{{ stprogress }}%</div>
       <div class="progress-bar" role="progressbar" aria-valuenow="{{ 100 - stprogress }}" aria-valuemin="{{ stmin }}" aria-valuemax="{{ stmax }}" ng-style="stInverseProgressStyle()" ng-class="stInverseProgressClass()">{{ stInverseProgressDisplay() }}</div>
     </div>
@@ -643,12 +643,19 @@ angular.module('stones').
 
         scope.stProgressClass = () ->
           if scope.stprogress < 100
-            return 'progress-bar-warning'
+            return 'progress-bar-info'
           else
             return 'progress-bar-success'
         scope.stInverseProgressClass = () ->
-          ret = 'progress-bar-info progress-striped'
-          if active then ret += ' active'
+          ret = ''
+          if scope.stprogress is 0
+            ret += ' progress-bar-danger'
+          else
+            ret += ' progress-bar-warning'
+          ret
+        scope.stProgressContainerClass = () ->
+          ret = 'progress'
+          if active then ret += ' progress-striped active'
           ret
 
         scope.stInverseProgressDisplay = () ->

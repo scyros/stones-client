@@ -732,7 +732,7 @@ automate and standarize client-server communications.
         template: '\
 <div class="st-chunked-file-uploader clearfix">\
   <div class="col-md-10">\
-    <div class="progress">\
+    <div class="progress" ng-class="stProgressContainerClass()">\
       <div class="progress-bar" role="progressbar" aria-valuenow="{{ stprogress }}" aria-valuemin="{{ stmin }}" aria-valuemax="{{ stmax }}" ng-style="stProgressStyle()" ng-class="stProgressClass()">{{ stprogress }}%</div>\
       <div class="progress-bar" role="progressbar" aria-valuenow="{{ 100 - stprogress }}" aria-valuemin="{{ stmin }}" aria-valuemax="{{ stmax }}" ng-style="stInverseProgressStyle()" ng-class="stInverseProgressClass()">{{ stInverseProgressDisplay() }}</div>\
     </div>\
@@ -862,16 +862,26 @@ automate and standarize client-server communications.
           };
           scope.stProgressClass = function() {
             if (scope.stprogress < 100) {
-              return 'progress-bar-warning';
+              return 'progress-bar-info';
             } else {
               return 'progress-bar-success';
             }
           };
           scope.stInverseProgressClass = function() {
             var ret;
-            ret = 'progress-bar-info progress-striped';
+            ret = '';
+            if (scope.stprogress === 0) {
+              ret += ' progress-bar-danger';
+            } else {
+              ret += ' progress-bar-warning';
+            }
+            return ret;
+          };
+          scope.stProgressContainerClass = function() {
+            var ret;
+            ret = 'progress';
             if (active) {
-              ret += ' active';
+              ret += ' progress-striped active';
             }
             return ret;
           };
