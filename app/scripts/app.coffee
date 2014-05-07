@@ -10,6 +10,21 @@ automate and standarize client-server communications.
 _STONES_CACHE = null;
 
 
+transformDates = (obj) ->
+  ###
+  Transform dates into string with the right format to be accepted by the server
+  ###
+  for key, value of obj
+    if angular.isObject value
+      if value.isLeapYear?  # moment object
+        obj[key] = value.format('YYYY-MM-DDTHH:mm:ss') + 'Z'
+      else if value.getDate?  # native date object
+        obj[key] = moment(value).format('YYYY-MM-DDTHH:mm:ss') + 'Z'
+      else
+        transformDates value
+  return
+
+
 stones = angular.module('stones', [
   'ngCookies',
   'ngSanitize',
@@ -80,9 +95,6 @@ stones.factory 'stResourceActionsBuilder', [
             ret.total_pages = data.total_pages
           return ret
         interceptor:
-          request: (_request) ->
-            console.log _request
-            return _request
           response: (_response) ->
             ret = _response.resource
             if _response.data.current_page?
@@ -95,6 +107,9 @@ stones.factory 'stResourceActionsBuilder', [
       update:
         method: 'put'
         withCredentials: true
+        transformRequest: (data) ->
+          transformDates data
+          JSON.stringify data
 
     return () ->
       angular.copy default_actions

@@ -8,9 +8,29 @@ automate and standarize client-server communications.
 
 (function() {
   'use strict';
-  var stones, _STONES_CACHE;
+  var stones, transformDates, _STONES_CACHE;
 
   _STONES_CACHE = null;
+
+  transformDates = function(obj) {
+    /*
+    Transform dates into string with the right format to be accepted by the server
+    */
+
+    var key, value;
+    for (key in obj) {
+      value = obj[key];
+      if (angular.isObject(value)) {
+        if (value.isLeapYear != null) {
+          obj[key] = value.format('YYYY-MM-DDTHH:mm:ss') + 'Z';
+        } else if (value.getDate != null) {
+          obj[key] = moment(value).format('YYYY-MM-DDTHH:mm:ss') + 'Z';
+        } else {
+          transformDates(value);
+        }
+      }
+    }
+  };
 
   stones = angular.module('stones', ['ngCookies', 'ngSanitize', 'ngRoute', 'ngResource', 'ngAnimate', 'angular-growl']);
 
@@ -72,10 +92,6 @@ automate and standarize client-server communications.
             return ret;
           },
           interceptor: {
-            request: function(_request) {
-              console.log(_request);
-              return _request;
-            },
             response: function(_response) {
               var ret;
               ret = _response.resource;
@@ -94,7 +110,11 @@ automate and standarize client-server communications.
         },
         update: {
           method: 'put',
-          withCredentials: true
+          withCredentials: true,
+          transformRequest: function(data) {
+            transformDates(data);
+            return JSON.stringify(data);
+          }
         }
       };
       return function() {
