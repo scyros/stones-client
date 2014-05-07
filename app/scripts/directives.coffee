@@ -521,7 +521,18 @@ angular.module('stones').
       require: 'ngModel'
       scope: true
       replace: true
-      template: '<div class="st-chunked-file-uploader clearfix"><div class="col-md-10"><div class="progress"><div class="progress-bar" role="progressbar" aria-valuenow="{{ stprogress }}" aria-valuemin="{{ stmin }}" aria-valuemax="{{ stmax }}" ng-style="stProgressStyle()" ng-class="stProgressClass()">{{ stprogress }}%</div></div></div><div class="col-md-2"><span class="btn btn-default btn-xs">Subir</span></div><input type="file" class="hidden"></div>'
+      template: '
+<div class="st-chunked-file-uploader clearfix">
+  <div class="col-md-10">
+    <div class="progress">
+      <div class="progress-bar" role="progressbar" aria-valuenow="{{ stprogress }}" aria-valuemin="{{ stmin }}" aria-valuemax="{{ stmax }}" ng-style="stProgressStyle()" ng-class="stProgressClass()">{{ stprogress }}%</div>
+      <div class="progress-bar" role="progressbar" aria-valuenow="{{ 100 - stprogress }}" aria-valuemin="{{ stmin }}" aria-valuemax="{{ stmax }}" ng-style="stInverseProgressStyle()" ng-class="stInverseProgressClass()"></div>
+    </div>
+  </div>
+  <div class="col-md-2">
+    <span class="btn btn-default btn-xs">Subir</span>
+  </div><input type="file" class="hidden">
+</div>'
       link: (scope, _elm, attrs, ngModel) ->
         elm = $window.jQuery(_elm)
         upload_url = attrs.stChunkedFileUploader
@@ -542,6 +553,7 @@ angular.module('stones').
         chunk_size = (256 * 1024 * 4) * 1  # 1Mb
         start = 0
         stop = start + chunk_size - 1
+        active = false
 
         input = elm.find('input[type=file]')
         button = elm.find('.btn')
@@ -586,6 +598,7 @@ angular.module('stones').
               else
                 ngModel.$setViewValue data.url
                 if scope.save? then scope.save()
+                active = false
               return
           return
 
@@ -596,6 +609,7 @@ angular.module('stones').
           scope.stprogress = 0
           start = 0
           stop = start + chunk_size - 1
+          active = true
 
           file = if e.dataTransfer? then e.dataTransfer.files[0] else e.target.files[0]
           if not allowed_mime_pattern.test file.type
@@ -624,12 +638,18 @@ angular.module('stones').
 
         scope.stProgressStyle = () ->
           width: "#{scope.stprogress}%"
+        scope.stInverseProgressStyle = () ->
+          width: "#{100 - scope.stprogress}%"
 
         scope.stProgressClass = () ->
           if scope.stprogress < 100
             return 'progress-bar-warning'
           else
             return 'progress-bar-success'
+        scope.stInverseProgressClass = () ->
+          ret = 'progress-bar-info progress-striped'
+          if active then ret += ' active'
+          ret
 
         scope.$watch attrs.ngModel, (newValue, oldValue) ->
           if newValue?.length? and newValue.length > 0

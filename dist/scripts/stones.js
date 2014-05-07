@@ -729,9 +729,20 @@ automate and standarize client-server communications.
         require: 'ngModel',
         scope: true,
         replace: true,
-        template: '<div class="st-chunked-file-uploader clearfix"><div class="col-md-10"><div class="progress"><div class="progress-bar" role="progressbar" aria-valuenow="{{ stprogress }}" aria-valuemin="{{ stmin }}" aria-valuemax="{{ stmax }}" ng-style="stProgressStyle()" ng-class="stProgressClass()">{{ stprogress }}%</div></div></div><div class="col-md-2"><span class="btn btn-default btn-xs">Subir</span></div><input type="file" class="hidden"></div>',
+        template: '\
+<div class="st-chunked-file-uploader clearfix">\
+  <div class="col-md-10">\
+    <div class="progress">\
+      <div class="progress-bar" role="progressbar" aria-valuenow="{{ stprogress }}" aria-valuemin="{{ stmin }}" aria-valuemax="{{ stmax }}" ng-style="stProgressStyle()" ng-class="stProgressClass()">{{ stprogress }}%</div>\
+      <div class="progress-bar" role="progressbar" aria-valuenow="{{ 100 - stprogress }}" aria-valuemin="{{ stmin }}" aria-valuemax="{{ stmax }}" ng-style="stInverseProgressStyle()" ng-class="stInverseProgressClass()"></div>\
+    </div>\
+  </div>\
+  <div class="col-md-2">\
+    <span class="btn btn-default btn-xs">Subir</span>\
+  </div><input type="file" class="hidden">\
+</div>',
         link: function(scope, _elm, attrs, ngModel) {
-          var allowed_mime_pattern, button, chunk_size, elm, file, fileDragOverHandler, fileSelectHandler, filename, input, max_size, readChunk, reader, set_filename_func, start, stop, upload_url, _ref, _ref1;
+          var active, allowed_mime_pattern, button, chunk_size, elm, file, fileDragOverHandler, fileSelectHandler, filename, input, max_size, readChunk, reader, set_filename_func, start, stop, upload_url, _ref, _ref1;
           elm = $window.jQuery(_elm);
           upload_url = attrs.stChunkedFileUploader;
           set_filename_func = $parse(attrs.stSetFilename)(scope);
@@ -751,6 +762,7 @@ automate and standarize client-server communications.
           chunk_size = (256 * 1024 * 4) * 1;
           start = 0;
           stop = start + chunk_size - 1;
+          active = false;
           input = elm.find('input[type=file]');
           button = elm.find('.btn');
           if (button) {
@@ -801,6 +813,7 @@ automate and standarize client-server communications.
                   if (scope.save != null) {
                     scope.save();
                   }
+                  active = false;
                 }
               });
             }
@@ -811,6 +824,7 @@ automate and standarize client-server communications.
             scope.stprogress = 0;
             start = 0;
             stop = start + chunk_size - 1;
+            active = true;
             file = e.dataTransfer != null ? e.dataTransfer.files[0] : e.target.files[0];
             if (!allowed_mime_pattern.test(file.type)) {
               growl.addErrorMessage("StFileUploaderError: " + file.type + " mimetype not allowed.");
@@ -841,12 +855,25 @@ automate and standarize client-server communications.
               width: "" + scope.stprogress + "%"
             };
           };
+          scope.stInverseProgressStyle = function() {
+            return {
+              width: "" + (100 - scope.stprogress) + "%"
+            };
+          };
           scope.stProgressClass = function() {
             if (scope.stprogress < 100) {
               return 'progress-bar-warning';
             } else {
               return 'progress-bar-success';
             }
+          };
+          scope.stInverseProgressClass = function() {
+            var ret;
+            ret = 'progress-bar-info progress-striped';
+            if (active) {
+              ret += ' active';
+            }
+            return ret;
           };
           return scope.$watch(attrs.ngModel, function(newValue, oldValue) {
             if (((newValue != null ? newValue.length : void 0) != null) && newValue.length > 0) {
