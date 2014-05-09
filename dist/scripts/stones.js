@@ -113,7 +113,7 @@ automate and standarize client-server communications.
           withCredentials: true,
           transformRequest: function(data) {
             transformDates(data);
-            JSON.stringify(data);
+            return JSON.stringify(data);
           }
         }
       };

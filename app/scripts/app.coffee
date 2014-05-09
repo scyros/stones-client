@@ -110,7 +110,6 @@ stones.factory 'stResourceActionsBuilder', [
         transformRequest: (data) ->
           transformDates data
           JSON.stringify data
-          return
 
     return () ->
       angular.copy default_actions
