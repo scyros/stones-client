@@ -439,17 +439,6 @@ angular.module('stones').
           scope.stSelectItem = @selectItem
           scope.stSetItemClass = @setItemClass
 
-          if $parse(attrs.stTypeaheadSelectFn)(scope)?
-            @selectFn = $parse(attrs.stTypeaheadSelectFn)(scope)
-          if $parse(attrs.stTypeadeadSortFn)(scope)?
-            @sortFn = $parse(attrs.stTypeaheadSortFn)(scope)
-
-          # Change source
-          scope.$watch attrs.stTypeahead, (value, old) =>
-            if value? and value isnt old
-              @setSource value
-            return
-
           # Add dropdown to DOM
           tpl = '
 <ul class="typeahead dropdown-menu">
@@ -484,6 +473,18 @@ angular.module('stones').
         # Update view if model changes
         ngModel.$viewChangeListeners.push () ->
           stTypeaheadCtrl.matchItems ngModel.$viewValue
+          return
+
+        # set SelectFn and SortFn
+        if $parse(attrs.stTypeaheadSelectFn)(scope)?
+          stTypeaheadCtrl.selectFn = $parse(attrs.stTypeaheadSelectFn)(scope)
+        if $parse(attrs.stTypeadeadSortFn)(scope)?
+          stTypeaheadCtrl.sortFn = $parse(attrs.stTypeaheadSortFn)(scope)
+
+        # Change source
+        scope.$watch attrs.stTypeahead, (value, old) =>
+          if value? and value isnt old
+            @setSource value
           return
 
         return

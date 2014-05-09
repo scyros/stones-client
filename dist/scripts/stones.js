@@ -704,17 +704,6 @@ automate and standarize client-server communications.
             };
             scope.stSelectItem = this.selectItem;
             scope.stSetItemClass = this.setItemClass;
-            if ($parse(attrs.stTypeaheadSelectFn)(scope) != null) {
-              this.selectFn = $parse(attrs.stTypeaheadSelectFn)(scope);
-            }
-            if ($parse(attrs.stTypeadeadSortFn)(scope) != null) {
-              this.sortFn = $parse(attrs.stTypeaheadSortFn)(scope);
-            }
-            scope.$watch(attrs.stTypeahead, function(value, old) {
-              if ((value != null) && value !== old) {
-                _this.setSource(value);
-              }
-            });
             tpl = '\
 <ul class="typeahead dropdown-menu">\
   <li ng-repeat="stItem in stMatchedItems" ng-click="stSelectItem(stItem)" ng-class="stSetItemClass(stItem)">\
@@ -734,7 +723,8 @@ automate and standarize client-server communications.
           }
         ],
         link: function(scope, elm, attrs, ctrls, transcludeFn) {
-          var ngModel, stTypeaheadCtrl;
+          var ngModel, stTypeaheadCtrl,
+            _this = this;
           stTypeaheadCtrl = ctrls[0];
           ngModel = ctrls[1];
           if ((ngModel == null) || (stTypeaheadCtrl == null)) {
@@ -743,6 +733,17 @@ automate and standarize client-server communications.
           stTypeaheadCtrl.ngModel = ngModel;
           ngModel.$viewChangeListeners.push(function() {
             stTypeaheadCtrl.matchItems(ngModel.$viewValue);
+          });
+          if ($parse(attrs.stTypeaheadSelectFn)(scope) != null) {
+            stTypeaheadCtrl.selectFn = $parse(attrs.stTypeaheadSelectFn)(scope);
+          }
+          if ($parse(attrs.stTypeadeadSortFn)(scope) != null) {
+            stTypeaheadCtrl.sortFn = $parse(attrs.stTypeaheadSortFn)(scope);
+          }
+          scope.$watch(attrs.stTypeahead, function(value, old) {
+            if ((value != null) && value !== old) {
+              _this.setSource(value);
+            }
           });
         }
       };
