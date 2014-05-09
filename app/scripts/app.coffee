@@ -93,7 +93,10 @@ stones.factory 'stResourceActionsBuilder', [
             ret.current_page = data.current_page
             ret.page_size = data.page_size
             ret.total_pages = data.total_pages
-          return ret
+          else
+            console.log this
+            this.fixAttrs()
+          ret
         interceptor:
           response: (_response) ->
             ret = _response.resource

@@ -88,6 +88,9 @@ automate and standarize client-server communications.
               ret.current_page = data.current_page;
               ret.page_size = data.page_size;
               ret.total_pages = data.total_pages;
+            } else {
+              console.log(this);
+              this.fixAttrs();
             }
             return ret;
           },
