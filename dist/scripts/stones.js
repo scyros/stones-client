@@ -76,20 +76,24 @@ automate and standarize client-server communications.
           withCredentials: true,
           isArray: true,
           transformResponse: function(_data, headers) {
-            var data, ret;
+            var data, entity, ret, _i, _len;
             if (typeof _data === 'string') {
               data = JSON.parse(_data);
             } else if (typeof _data === 'object') {
               data = _data;
             }
             ret = data;
+            console.log(this);
             if ('entities' in data) {
               ret = data.entities;
               ret.current_page = data.current_page;
               ret.page_size = data.page_size;
               ret.total_pages = data.total_pages;
+              for (_i = 0, _len = ret.length; _i < _len; _i++) {
+                entity = ret[_i];
+                this.fixAttrs(entity);
+              }
             } else {
-              console.log(this);
               this.fixAttrs();
             }
             return ret;

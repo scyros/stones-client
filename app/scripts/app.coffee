@@ -88,13 +88,16 @@ stones.factory 'stResourceActionsBuilder', [
             data = _data
 
           ret = data
+          console.log this
           if ('entities' of data)
             ret = data.entities
             ret.current_page = data.current_page
             ret.page_size = data.page_size
             ret.total_pages = data.total_pages
+
+            for entity in ret
+              this.fixAttrs(entity)
           else
-            console.log this
             this.fixAttrs()
           ret
         interceptor:
