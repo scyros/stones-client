@@ -76,25 +76,18 @@ automate and standarize client-server communications.
           withCredentials: true,
           isArray: true,
           transformResponse: function(_data, headers) {
-            var data, entity, ret, _i, _len;
+            var data, ret;
             if (typeof _data === 'string') {
               data = JSON.parse(_data);
             } else if (typeof _data === 'object') {
               data = _data;
             }
             ret = data;
-            console.log(this);
             if ('entities' in data) {
               ret = data.entities;
               ret.current_page = data.current_page;
               ret.page_size = data.page_size;
               ret.total_pages = data.total_pages;
-              for (_i = 0, _len = ret.length; _i < _len; _i++) {
-                entity = ret[_i];
-                this.fixAttrs(entity);
-              }
-            } else {
-              this.fixAttrs();
             }
             return ret;
           },
@@ -120,7 +113,7 @@ automate and standarize client-server communications.
           withCredentials: true,
           transformRequest: function(data) {
             transformDates(data);
-            return JSON.stringify(data);
+            JSON.stringify(data);
           }
         }
       };
