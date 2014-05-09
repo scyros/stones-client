@@ -31,7 +31,7 @@ cleanUp = (obj) ->
   ###
   for key, value of obj
     if angular.isObject value
-      keys = [_key for own _key, _value of value]
+      keys = (_key for own _key, _value of value)
       if keys.length is 0
         delete obj[key]
       else
@@ -40,7 +40,6 @@ cleanUp = (obj) ->
       if not value?
         delete obj[key]
   return
-
 
 stones = angular.module('stones', [
   'ngCookies',

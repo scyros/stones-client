@@ -42,18 +42,16 @@ automate and standarize client-server communications.
     for (key in obj) {
       value = obj[key];
       if (angular.isObject(value)) {
-        keys = [
-          (function() {
-            var _results;
-            _results = [];
-            for (_key in value) {
-              if (!__hasProp.call(value, _key)) continue;
-              _value = value[_key];
-              _results.push(_key);
-            }
-            return _results;
-          })()
-        ];
+        keys = (function() {
+          var _results;
+          _results = [];
+          for (_key in value) {
+            if (!__hasProp.call(value, _key)) continue;
+            _value = value[_key];
+            _results.push(_key);
+          }
+          return _results;
+        })();
         if (keys.length === 0) {
           delete obj[key];
         } else {
