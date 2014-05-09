@@ -141,6 +141,16 @@ automate and standarize client-server communications.
             }
           }
         },
+        save: {
+          method: 'post',
+          withCredentials: true,
+          transformRequest: function(data) {
+            transformDates(data);
+            cleanUp(data);
+            cleanUp(data);
+            return angular.toJson(data);
+          }
+        },
         update: {
           method: 'put',
           withCredentials: true,

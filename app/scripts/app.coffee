@@ -120,6 +120,14 @@ stones.factory 'stResourceActionsBuilder', [
             if _response.data.total_pages?
               ret.total_pages = _response.data.total_pages
             ret
+      save:
+        method: 'post'
+        withCredentials: true
+        transformRequest: (data) ->
+          transformDates data
+          cleanUp data  # fist time to delete inner empties
+          cleanUp data  # second time to delete emptied objects
+          angular.toJson data
       update:
         method: 'put'
         withCredentials: true
