@@ -712,7 +712,7 @@ automate and standarize client-server communications.
             }
             scope.$watch(attrs.stTypeahead, function(value, old) {
               if ((value != null) && value !== old) {
-                this.setSource(value);
+                _this.setSource(value);
               }
             });
             tpl = '\
