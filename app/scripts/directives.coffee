@@ -484,7 +484,7 @@ angular.module('stones').
         # Change source
         scope.$watch attrs.stTypeahead, (value, old) =>
           if value? and value isnt old
-            @setSource value
+            stTypeaheadCtrl.setSource value
           return
 
         return

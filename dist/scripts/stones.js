@@ -742,7 +742,7 @@ automate and standarize client-server communications.
           }
           scope.$watch(attrs.stTypeahead, function(value, old) {
             if ((value != null) && value !== old) {
-              _this.setSource(value);
+              stTypeaheadCtrl.setSource(value);
             }
           });
         }
