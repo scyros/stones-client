@@ -110,9 +110,9 @@ automate and standarize client-server communications.
           isArray: true,
           transformResponse: function(_data, headers) {
             var data, ret;
-            if (typeof _data === 'string') {
+            if (angular.isString(_data)) {
               data = JSON.parse(_data);
-            } else if (typeof _data === 'object') {
+            } else if (angular.isObject(_data)) {
               data = _data;
             }
             ret = data;
@@ -288,14 +288,18 @@ automate and standarize client-server communications.
     '$compile', function($compile) {
       return {
         restrict: 'A',
+        scope: true,
         link: function(scope, elm, attrs) {
           var title;
           title = attrs.stTitle;
           elm.attr('title', title);
-          return elm.tooltip({
+          elm.tooltip({
             title: title,
             container: 'body',
             placement: 'auto bottom'
+          });
+          scope.$on('$destroy', function() {
+            elm.tooltip('destroy');
           });
         }
       };

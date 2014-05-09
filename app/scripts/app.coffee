@@ -98,9 +98,9 @@ stones.factory 'stResourceActionsBuilder', [
         withCredentials: true,
         isArray: true
         transformResponse: (_data, headers) ->
-          if typeof _data is 'string'
-            data = JSON.parse(_data)
-          else if typeof _data is 'object'
+          if angular.isString _data
+            data = JSON.parse _data
+          else if angular.isObject _data
             data = _data
 
           ret = data

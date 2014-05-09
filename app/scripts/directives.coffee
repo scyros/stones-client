@@ -87,6 +87,7 @@ angular.module('stones')
     '$compile',
     ($compile) ->
       restrict: 'A'
+      scope: true
       link: (scope, elm, attrs) ->
         title = attrs.stTitle
         elm.attr 'title', title
@@ -94,6 +95,12 @@ angular.module('stones')
           title: title
           container: 'body'
           placement: 'auto bottom'
+
+        scope.$on '$destroy', () ->
+          elm.tooltip 'destroy'
+          return
+
+        return
   ]
 
 
