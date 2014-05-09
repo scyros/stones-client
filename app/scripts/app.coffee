@@ -25,6 +25,23 @@ transformDates = (obj) ->
   return
 
 
+cleanUp = (obj) ->
+  ###
+  Clean object deleting empty attributes
+  ###
+  for key, value of obj
+    if angular.isObject value
+      keys = [_key for own _key, _value of value]
+      if keys.length is 0
+        delete obj[key]
+      else
+        cleanUp value
+    else
+      if not value?
+        delete obj[key]
+  return
+
+
 stones = angular.module('stones', [
   'ngCookies',
   'ngSanitize',
@@ -109,7 +126,9 @@ stones.factory 'stResourceActionsBuilder', [
         withCredentials: true
         transformRequest: (data) ->
           transformDates data
-          JSON.stringify data
+          cleanUp data  # fist time to delete inner empties
+          cleanUp data  # second time to delete emptied objects
+          angular.toJson data
 
     return () ->
       angular.copy default_actions

@@ -8,7 +8,8 @@ automate and standarize client-server communications.
 
 (function() {
   'use strict';
-  var stones, transformDates, _STONES_CACHE;
+  var cleanUp, stones, transformDates, _STONES_CACHE,
+    __hasProp = {}.hasOwnProperty;
 
   _STONES_CACHE = null;
 
@@ -27,6 +28,40 @@ automate and standarize client-server communications.
           obj[key] = moment(value).format('YYYY-MM-DDTHH:mm:ss') + 'Z';
         } else {
           transformDates(value);
+        }
+      }
+    }
+  };
+
+  cleanUp = function(obj) {
+    /*
+    Clean object deleting empty attributes
+    */
+
+    var key, keys, value, _key, _value;
+    for (key in obj) {
+      value = obj[key];
+      if (angular.isObject(value)) {
+        keys = [
+          (function() {
+            var _results;
+            _results = [];
+            for (_key in value) {
+              if (!__hasProp.call(value, _key)) continue;
+              _value = value[_key];
+              _results.push(_key);
+            }
+            return _results;
+          })()
+        ];
+        if (keys.length === 0) {
+          delete obj[key];
+        } else {
+          cleanUp(value);
+        }
+      } else {
+        if (value == null) {
+          delete obj[key];
         }
       }
     }
@@ -113,7 +148,9 @@ automate and standarize client-server communications.
           withCredentials: true,
           transformRequest: function(data) {
             transformDates(data);
-            return JSON.stringify(data);
+            cleanUp(data);
+            cleanUp(data);
+            return angular.toJson(data);
           }
         }
       };
