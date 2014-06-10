@@ -482,6 +482,7 @@ angular.module('stones').
           stTypeaheadCtrl.sortFn = $parse(attrs.stTypeaheadSortFn)(scope)
 
         # Change source
+        stTypeaheadCtrl.setSource $parse(attrs.stTypeahead) scope
         scope.$watch attrs.stTypeahead, (value, old) =>
           if value? and value isnt old
             stTypeaheadCtrl.setSource value

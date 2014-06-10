@@ -750,6 +750,7 @@ automate and standarize client-server communications.
           if ($parse(attrs.stTypeadeadSortFn)(scope) != null) {
             stTypeaheadCtrl.sortFn = $parse(attrs.stTypeaheadSortFn)(scope);
           }
+          stTypeaheadCtrl.setSource($parse(attrs.stTypeahead)(scope));
           scope.$watch(attrs.stTypeahead, function(value, old) {
             if ((value != null) && value !== old) {
               stTypeaheadCtrl.setSource(value);
