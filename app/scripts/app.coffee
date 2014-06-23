@@ -93,6 +93,14 @@ Returns the default actions related to CRUD operations with Stones Server
 stones.factory 'stResourceActionsBuilder', [
   () ->
     default_actions =
+      get:
+        method: 'get'
+        withCredentials: true
+        interceptor:
+          response: (response) ->
+            if response.resource.fixAttrs?
+              response.resource.fixAttrs()
+            response
       query:
         method: 'get'
         withCredentials: true,

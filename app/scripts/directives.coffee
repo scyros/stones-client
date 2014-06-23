@@ -196,58 +196,6 @@ angular.module('stones')
 
 
 ###
-Google Maps geocoding directive
-Allow to pick a location from Google Maps geocoding options fetched.
-###
-angular.module('stones').
-  directive 'stGeocoding', [
-    '$http'
-    ($http) ->
-      restrict: 'EA'
-      require: ['stGeocoding', 'stTypeahead']
-      controller: [
-        () ->
-          @url = null
-          @getGeocoding = (searchTerm, components, region) =>
-            if not @url?
-              throw 'stGeocodingError: URL not defined.'
-
-            http_opts =
-              url: @url
-              method: 'GET'
-              params:
-                q: searchTerm
-                c: components
-                r: region
-
-            return $http http_opts
-
-          return
-      ]
-      link: (scope, elm, attrs, ctrls, transcludeFn) ->
-        stGeocodingCtrl = ctrls[0]
-        stTypeaheadCtrl = ctrls[1]
-
-        if not attrs.stGeocoding?
-          throw 'stGeocodingError: URL not defined in DOM attr st-geocoding'
-
-        stGeocodingCtrl.url = attrs.stGeocoding
-
-        # listen for changes
-        stTypeaheadCtrl.ngModel.$viewChangeListeners.push () ->
-          ngModel = stTypeaheadCtrl.ngModel
-          if ngModel.$viewValue.length < 3 then return
-
-          req = stGeocodingCtrl.getGeocoding ngModel.$viewValue, attrs.stGeocodingComponents
-          req.success (data) ->
-            stTypeaheadCtrl.setSource data
-          return
-
-        return
-  ]
-
-
-###
 Typeahead directive
 Allow to fetch and pick data based on typed characters.
 ###
@@ -440,12 +388,14 @@ angular.module('stones').
           scope.stSetItemClass = @setItemClass
 
           # Add dropdown to DOM
-          tpl = '
+          tplSimple = '
 <ul class="typeahead dropdown-menu">
   <li ng-repeat="stItem in stMatchedItems" ng-click="stSelectItem(stItem)" ng-class="stSetItemClass(stItem)">
-    <a href="">{{ stItem.label }}</a>
+    <a href="#">{{ stItem.label }}</a>
   </li>
 </ul>'
+          tpl = tplSimple
+
           @dropdown = $compile(tpl)(scope)
           angular.element('body').append @dropdown
           @dropdown.bind 'mouseenter', @mouseenterFn
@@ -483,7 +433,7 @@ angular.module('stones').
 
         # Change source
         stTypeaheadCtrl.setSource $parse(attrs.stTypeahead) scope
-        scope.$watch attrs.stTypeahead, (value, old) =>
+        scope.$watchCollection attrs.stTypeahead, (value, old) =>
           if value? and value isnt old
             stTypeaheadCtrl.setSource value
           return
@@ -786,7 +736,7 @@ angular.module('stones').
       template: (elm, attrs) ->
         tpl = '<div class="st-file-uploader"><div class="st-file-display-container hidden"><div class="st-file-remove-overlay"><i class="fa fa-times-circle"></i></div>';
         if elm[0].tagName is 'IMG'
-          tpl += '<img class="img-responsive img-rounded" />'
+          tpl += '<img class="img-responsive img-rounded" style="margin: auto;" />'
           attrs.$attr.stMimeType = 'st-mime-type'
           attrs.$set 'stMimeType', 'image.*'
         tpl += '</div><div class="st-file-control-container"><span class="btn btn-primary btn-sm">Selecciona</span><br />- o -<br />Arrastra aquí el archivo</div></div>'

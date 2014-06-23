@@ -104,6 +104,18 @@ automate and standarize client-server communications.
     function() {
       var default_actions;
       default_actions = {
+        get: {
+          method: 'get',
+          withCredentials: true,
+          interceptor: {
+            response: function(response) {
+              if (response.resource.fixAttrs != null) {
+                response.resource.fixAttrs();
+              }
+              return response;
+            }
+          }
+        },
         query: {
           method: 'get',
           withCredentials: true,
@@ -436,63 +448,6 @@ automate and standarize client-server communications.
   ]);
 
   /*
-  Google Maps geocoding directive
-  Allow to pick a location from Google Maps geocoding options fetched.
-  */
-
-
-  angular.module('stones').directive('stGeocoding', [
-    '$http', function($http) {
-      return {
-        restrict: 'EA',
-        require: ['stGeocoding', 'stTypeahead'],
-        controller: [
-          function() {
-            var _this = this;
-            this.url = null;
-            this.getGeocoding = function(searchTerm, components, region) {
-              var http_opts;
-              if (_this.url == null) {
-                throw 'stGeocodingError: URL not defined.';
-              }
-              http_opts = {
-                url: _this.url,
-                method: 'GET',
-                params: {
-                  q: searchTerm,
-                  c: components,
-                  r: region
-                }
-              };
-              return $http(http_opts);
-            };
-          }
-        ],
-        link: function(scope, elm, attrs, ctrls, transcludeFn) {
-          var stGeocodingCtrl, stTypeaheadCtrl;
-          stGeocodingCtrl = ctrls[0];
-          stTypeaheadCtrl = ctrls[1];
-          if (attrs.stGeocoding == null) {
-            throw 'stGeocodingError: URL not defined in DOM attr st-geocoding';
-          }
-          stGeocodingCtrl.url = attrs.stGeocoding;
-          stTypeaheadCtrl.ngModel.$viewChangeListeners.push(function() {
-            var ngModel, req;
-            ngModel = stTypeaheadCtrl.ngModel;
-            if (ngModel.$viewValue.length < 3) {
-              return;
-            }
-            req = stGeocodingCtrl.getGeocoding(ngModel.$viewValue, attrs.stGeocodingComponents);
-            req.success(function(data) {
-              return stTypeaheadCtrl.setSource(data);
-            });
-          });
-        }
-      };
-    }
-  ]);
-
-  /*
   Typeahead directive
   Allow to fetch and pick data based on typed characters.
   */
@@ -506,7 +461,7 @@ automate and standarize client-server communications.
         require: ['stTypeahead', '^?ngModel'],
         controller: [
           '$scope', '$element', '$attrs', '$transclude', function(scope, elm, attrs, transcludeFn) {
-            var tpl,
+            var tpl, tplSimple,
               _this = this;
             this.source = [];
             this.ngModel = null;
@@ -714,12 +669,13 @@ automate and standarize client-server communications.
             };
             scope.stSelectItem = this.selectItem;
             scope.stSetItemClass = this.setItemClass;
-            tpl = '\
+            tplSimple = '\
 <ul class="typeahead dropdown-menu">\
   <li ng-repeat="stItem in stMatchedItems" ng-click="stSelectItem(stItem)" ng-class="stSetItemClass(stItem)">\
-    <a href="">{{ stItem.label }}</a>\
+    <a href="#">{{ stItem.label }}</a>\
   </li>\
 </ul>';
+            tpl = tplSimple;
             this.dropdown = $compile(tpl)(scope);
             angular.element('body').append(this.dropdown);
             this.dropdown.bind('mouseenter', this.mouseenterFn);
@@ -751,7 +707,7 @@ automate and standarize client-server communications.
             stTypeaheadCtrl.sortFn = $parse(attrs.stTypeaheadSortFn)(scope);
           }
           stTypeaheadCtrl.setSource($parse(attrs.stTypeahead)(scope));
-          scope.$watch(attrs.stTypeahead, function(value, old) {
+          scope.$watchCollection(attrs.stTypeahead, function(value, old) {
             if ((value != null) && value !== old) {
               stTypeaheadCtrl.setSource(value);
             }
@@ -1072,7 +1028,7 @@ automate and standarize client-server communications.
           var tpl;
           tpl = '<div class="st-file-uploader"><div class="st-file-display-container hidden"><div class="st-file-remove-overlay"><i class="fa fa-times-circle"></i></div>';
           if (elm[0].tagName === 'IMG') {
-            tpl += '<img class="img-responsive img-rounded" />';
+            tpl += '<img class="img-responsive img-rounded" style="margin: auto;" />';
             attrs.$attr.stMimeType = 'st-mime-type';
             attrs.$set('stMimeType', 'image.*');
           }
