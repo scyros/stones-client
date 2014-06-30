@@ -100,7 +100,7 @@ stones.factory 'stResourceActionsBuilder', [
           response: (response) ->
             if response.resource.fixAttrs?
               response.resource.fixAttrs()
-            response
+            response.resource
       query:
         method: 'get'
         withCredentials: true,

@@ -112,7 +112,7 @@ automate and standarize client-server communications.
               if (response.resource.fixAttrs != null) {
                 response.resource.fixAttrs();
               }
-              return response;
+              return response.resource;
             }
           }
         },
