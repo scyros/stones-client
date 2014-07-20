@@ -138,10 +138,13 @@ automate and standarize client-server communications.
           },
           interceptor: {
             response: function(_response) {
-              var ret;
+              var entity, ret, _i, _len;
               ret = _response.resource;
-              if (ret.fixAttrs != null) {
-                ret.fixAttrs();
+              for (_i = 0, _len = ret.length; _i < _len; _i++) {
+                entity = ret[_i];
+                if (entity.fixAttrs != null) {
+                  entity.fixAttrs();
+                }
               }
               if (_response.data.current_page != null) {
                 ret.current_page = _response.data.current_page;
