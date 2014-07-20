@@ -121,6 +121,7 @@ stones.factory 'stResourceActionsBuilder', [
         interceptor:
           response: (_response) ->
             ret = _response.resource
+            if ret.fixAttrs? then ret.fixAttrs()
             if _response.data.current_page?
               ret.current_page = _response.data.current_page
             if _response.data.page_size?

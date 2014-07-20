@@ -140,6 +140,9 @@ automate and standarize client-server communications.
             response: function(_response) {
               var ret;
               ret = _response.resource;
+              if (ret.fixAttrs != null) {
+                ret.fixAttrs();
+              }
               if (_response.data.current_page != null) {
                 ret.current_page = _response.data.current_page;
               }
